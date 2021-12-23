@@ -62,5 +62,5 @@ const MailSchema = new mongoose.Schema(
 // Senior React Native Engineer
 // React.js (Node.js) TypeScript FE/FS Engineer
 
-
+// https://demo.mobiscroll.com/javascript/calendar/half-day-styling#
 module.exports = mongoose.model("mail", MailSchema, "Mail Collection");

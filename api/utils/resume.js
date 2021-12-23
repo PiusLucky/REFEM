@@ -19,8 +19,10 @@ cloudinary.config({
   secure: true,
 });
 
+
 const updateUserWithResume = async (req, fmt, url) => {
   try {
+    const apiKey = req.headers["api-key"];
     //upsert allows mongoose to create a new instance if no resume instance (with initial filter) exists.
     const resumeInstance = await ResumeModel.findOneAndUpdate(
       { initial: false },
@@ -30,11 +32,17 @@ const updateUserWithResume = async (req, fmt, url) => {
     );
 
     const newResumeId = resumeInstance._id;
-    const userUpdate = await UserModel.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $set: { resume: newResumeId } },
-      { new: true }
-    );
+    const userUpdate = req.user._id
+      ? await UserModel.findOneAndUpdate(
+          { _id: req.user._id },
+          { $set: { resume: newResumeId } },
+          { new: true }
+        )
+      : await UserModel.findOneAndUpdate(
+          { apiKey },
+          { $set: { resume: newResumeId } },
+          { new: true }
+        );
     return userUpdate;
   } catch (err) {
     console.log(err);
@@ -59,7 +67,17 @@ const saveResumeInstanceAndReturnJSON = () => {
 
     const fileSize = fileData.size;
 
-    const specFilePath = `resume/users/${req.params.userId}`;
+    const user = req.user._id
+      ? await UserModel.findOne(
+          { _id: req.user._id }
+        )
+      : await UserModel.findOne(
+          { apiKey }
+        );
+      
+    const userId = user._id
+
+    const specFilePath = `resume/users/${userId}`;
 
     if (
       allowedMimeType.includes(fileData.mimetype) &&
@@ -71,9 +89,7 @@ const saveResumeInstanceAndReturnJSON = () => {
         { folder: specFilePath, public_id: "resume", overwrite: true },
         async (err, result) => {
           if (result) {
-            //mapping model to new instance
             const { width, height, format, bytes, url } = await result;
-
             //update resume and user schema
             updateUserWithResume(req, format, url);
 

@@ -38,7 +38,7 @@ const lengthValidator = (str, req_max, req_min) => {
   // req_max => required maximen length specified in the schema
   // req_min => required minimum length specified in the schema\
   if (str) {
-    if (str.length > req_min && str.length <= req_max) {
+    if (str.length >= req_min && str.length <= req_max) {
       return true;
     }
   }

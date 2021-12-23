@@ -7,15 +7,17 @@ const axios = require("axios");
 let { IPinfoWrapper } = require("node-ipinfo");
 const handlebars = require("handlebars");
 const fs = require("fs");
-const { promisify } = require('util');
+const { promisify } = require("util");
 const dotenv = require("dotenv");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 
 dotenv.config();
 
-
 const getIpInfo = async () => {
-  const IPIFY_LINK = process.env.IPIFY_LINK
-  const IP_INFO_KEY = process.env.IP_INFO_KEY
+  const IPIFY_LINK = process.env.IPIFY_LINK;
+  const IP_INFO_KEY = process.env.IP_INFO_KEY;
 
   let ipInfo = {};
 
@@ -49,6 +51,12 @@ const getIpInfo = async () => {
 };
 
 const saveUserInstanceAndReturnJSON = () => {
+  const API_LINK = process.env.API_LINK;
+  const USER = process.env.GMAIL_APP_USER;
+  const PASS = process.env.GMAIL_APP_PASSWORD;
+  const HOST = process.env.GMAIL_HOST;
+  const PORT = process.env.GMAIL_PORT;
+
   return async (req, res) => {
     const ipData = await getIpInfo();
 
@@ -67,16 +75,19 @@ const saveUserInstanceAndReturnJSON = () => {
       email,
       password,
       repeatPassword,
-      phoneNumber
+      phoneNumber,
     } = req.body;
-    
+
     let user = req.user;
 
+    const usernameLower = username.toLowerCase();
+    const emailLower = email.toLowerCase();
+
     //mapping model to new instance
-    user.username = username.toLowerCase();
+    user.username = usernameLower;
     user.firstname = firstname.toLowerCase();
     user.lastname = lastname.toLowerCase();
-    user.email = email.toLowerCase();
+    user.email = emailLower;
     user.password = password;
     user.repeatPassword = repeatPassword;
     user.phoneNumber = phoneNumber;
@@ -92,33 +103,58 @@ const saveUserInstanceAndReturnJSON = () => {
 
     //check if username already exists
     const usernameExist = await UserModel.findOne({
-      username: username,
+      username: usernameLower,
     });
 
     if (usernameExist) {
       return res.status(400).json({
         msg: "Username already exists",
         _help:
-          "Try a different username by appending a digit or symbol to previous email",
+          "Try a different username combination by appending a digit or symbol to previous username",
       });
     }
 
+    //validate username length
+    const realUsername = lengthValidator(username, 20, 6);
+    if (!realUsername)
+      return res.status(400).json({
+        msg: "Username is not valid!",
+        _help:
+          "Username must have a minimum of 6 and maximium of 20 characters.",
+      });
+
+    //validate firstname length
+    const realFirstname = lengthValidator(firstname, 20, 2);
+    if (!realFirstname)
+      return res.status(400).json({
+        msg: "First name is not valid!",
+        _help:
+          "First name must have a minimum of 2 and maximium of 20 characters.",
+      });
+
+    //validate lastname length
+    const realLastname = lengthValidator(lastname, 20, 2);
+    if (!realLastname)
+      return res.status(400).json({
+        msg: "Last name is not valid!",
+        _help:
+          "Last name must have a minimum of 2 and maximium of 20 characters.",
+      });
+
     //check if email passes the validation check
-    const realEmail = validateEmail(email);
+    const realEmail = validateEmail(emailLower);
 
     //check if email already exists
     const emailExist = await UserModel.findOne({
-      email: email,
+      email: emailLower,
     });
 
     if (emailExist) {
-      if (emailExist) {
-        return res.status(400).json({
-          msg: "Email already exists",
-          _help:
-            "Try a different email by appending a digit or symbol to previous email",
-        });
-      }
+      return res.status(400).json({
+        msg: "Email already exists",
+        _help:
+          "Try a different email by appending a digit or symbol to previous email",
+      });
     }
 
     if (!realEmail) {
@@ -137,7 +173,7 @@ const saveUserInstanceAndReturnJSON = () => {
       });
 
     //validate phone number length
-    const realPhone = lengthValidator(phoneNumber, 18, 5)
+    const realPhone = lengthValidator(phoneNumber, 18, 5);
     if (!realPhone)
       return res.status(400).json({
         msg: "Phone number not valid!",
@@ -148,38 +184,66 @@ const saveUserInstanceAndReturnJSON = () => {
     //check for password strength
     const { status } = strengthChecker(password);
     if (status === "strong" || status === "medium") {
-      // try {
+      try {
         user.password = hashedPassword;
         user.repeatPassword = hashedPassword;
-        user = await user.save();
-        res.status(201).json({
-          id: user._id,
+
+        const transporter = nodemailer.createTransport({
+          host: HOST,
+          port: PORT,
+          auth: {
+            user: USER,
+            pass: PASS,
+          },
+          secure: true,
+          // This will prevent "nodejs - error self signed certificate in certificate chain" in development.
+          tls: {
+            rejectUnauthorized: false,
+          },
         });
-      // } catch (err) {
-      //   res.status(400).json({
-      //     msg: "OOPS...",
-      //     _help: "Try different inputs",
-      //   });
-      // }
+
+        crypto.randomBytes(32, async (err, buffer) => {
+          if (err) {
+            return res.json(err);
+          }
+          const isVerified = true;
+          const token = buffer.toString("hex");
+          user.verifyToken = token;
+          /** 
+            Use this link => https://www.online-toolz.com/tools/date-functions.php
+            Reset Token will expire in the next 30 minutes.
+          */
+          user.vExpireToken = Date.now() + 1800000;
+
+          user = await user.save();
+
+          if (user) {
+            const mail = await sendMail(isVerified, user, transporter);
+            if (mail.status === 200) {
+              res.status(201).json({
+                msg: `Verification link sent successfully!`,
+              });
+            }
+          }
+        });
+      } catch (err) {
+        res.status(400).json({
+          msg: "OOPS...",
+          _help: "Try different inputs",
+        });
+      }
     } else {
       return res.status(400).json({
         msg: "Password is very weak",
         _help: "Try something similar to MyPassword$1234",
       });
     }
-
-
-
-
   };
 };
 
-
-
-
-const sendMail = async (user, mailSender) => {
+const sendMail = async (isVerify, user, mailSender) => {
   try {
-    const API_LINK = process.env.API_LINK
+    const API_LINK = process.env.API_LINK;
     const readFile = promisify(fs.readFile);
 
     let html = await readFile("template/html/email.html", "utf8");
@@ -188,35 +252,41 @@ const sendMail = async (user, mailSender) => {
 
     const savedUser = await user.save();
 
-    const token = savedUser.resetToken
+    const token = isVerify ? savedUser.verifyToken : savedUser.resetToken;
 
+    const urlPart = isVerify ? "email-verify" : "password-reset";
 
     let data = {
       username: savedUser.username,
-      full_link: `${API_LINK}/auth/reset-password?token=${token}`
+      full_link: `${API_LINK}/auth/${urlPart}?token=${token}`,
+      emailType: !isVerify ? "Reset Password" : "Verify Email",
+      headerType: !isVerify ? "PASSWORD RESET" : "VERIFICATION",
+      action: !isVerify ? "Password Reset" : "Account Verification",
+      tokenExpiration: isVerify ? "30 minutes " : "1 hour ",
     };
     let htmlToSend = template(data);
     const mailOptions = {
-      from: "REFEM - NIGERIA",
-      to: savedUser.email,   
-      subject: "Password Reset Request",
-      html: htmlToSend
-    }
+      from: "APPLICANT - JOB POSTING <refem.applicants@gmail.com>",
+      to: savedUser.email,
+      subject: !isVerify ? "Password Reset Request" : "Verify Email",
+      html: htmlToSend,
+    };
     mailSender.sendMail(mailOptions);
-    return { 
-      message: "Email Sent succesfully, check your mail inbox (or spam folder).", 
-      sent: true
+    return {
+      status: 200,
+      message:
+        "Email Sent succesfully, check your mail inbox (or spam folder).",
+      sent: true,
     };
   } catch (err) {
-    return { 
-      message: "Something went wrong. Try again.", 
-      sent: false, 
-      err: err 
+    return {
+      status: 400,
+      message: "Something went wrong. Try again.",
+      sent: false,
+      err: err,
     };
   }
 };
-
-
 
 module.exports = {
   saveUserInstanceAndReturnJSON,

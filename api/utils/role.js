@@ -1,4 +1,4 @@
 module.exports = {
-    Admin: 'Basic',
-    User: 'SuperUser'
+    Admin: 'SuperUser',
+    User: 'Basic'
 }

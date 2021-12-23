@@ -1,26 +1,33 @@
-const express = require('express')
-const verifyToken = require('../middleware/verifyToken')
-const  { saveUserInstanceAndReturnJSON } = require('../utils/auth')
-const  { registerUser, loginUser, forgotPassword, resetPassword } = require('../controllers/auth')
+const express = require("express");
+const { saveUserInstanceAndReturnJSON } = require("../utils/auth");
+const {
+    registerUser,
+    loginUser,
+    forgotPassword,
+    resetPassword,
+    verifyEmail,
+    activationCode,
+} = require("../controllers/auth");
 
-const router = express.Router()
-
-
-
+const router = express.Router();
 
 // Register Route
-router.post('/register', registerUser, saveUserInstanceAndReturnJSON())
+router.post("/register", registerUser, saveUserInstanceAndReturnJSON());
 
 // Login Route
 router.post("/login", loginUser);
 
 // Forgot Password Route
-router.post('/forgot-password', forgotPassword);
-
+router.post("/forgot-password", forgotPassword);
 
 // Reset Password Route
-router.post('/password-reset', resetPassword);
+router.post("/password-reset", resetPassword);
 
+// Reset Password Route
+router.post("/email-verify", verifyEmail);
+
+// Reset Password Route
+router.post("/resend-activation-code", activationCode);
 
 // detail page of a specific post based on unique slug
 // router.get('/:slug', async (req, res) => {
@@ -44,7 +51,7 @@ router.post('/password-reset', resetPassword);
 // router.delete('/delete/:id', async (req, res) => {
 //   try{
 //     const removedPost = await BlogModel.findByIdAndDelete(req.params.id)
-//     res.json(removedPost) 
+//     res.json(removedPost)
 //   }catch(err) {
 //     res.json({
 //       message: err
@@ -53,8 +60,7 @@ router.post('/password-reset', resetPassword);
 
 // })
 
-
-module.exports = router
+module.exports = router;
 
 // https://www.json-generator.com/
 // {
@@ -63,8 +69,6 @@ module.exports = router
 //   "description": "{{lorem(1, 'paragraphs')}}",
 //   "body": "{{lorem(7, 'paragraphs')}}"
 // }
-
-
 
 //register.json
 // {
@@ -81,4 +85,3 @@ module.exports = router
 //   "username_email": "<insert existing_username or existing_email>",
 //   "password": "John&Matt&5"
 // }
-

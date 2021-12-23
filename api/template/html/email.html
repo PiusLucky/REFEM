@@ -1,304 +1,451 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css'>
-<head>
-<!--[if gte mso 12]>
-> <style type="text/css">
-> [a.btn {
-    padding:15px 22px !important;
-    display:inline-block !important;
-}]
-> </style>
-> <![endif]-->
-<title>Refem</title>
-<style type="text/css">
-div, p, a, li, td {
-    -webkit-text-size-adjust:none;
-}
-.ReadMsgBody {
-    width: 100%;
-    background-color: #d1d1d1;
-}
-.ExternalClass {
-    width: 100%;
-    background-color: #d1d1d1;
-    line-height:100%;
-}
-body {
-    width: 100%;
-    height: 100%;
-    background-color: #d1d1d1;
-    margin:0;
-    padding:0;
-    -webkit-font-smoothing: antialiased;
-    -webkit-text-size-adjust:100%;
-}
-html {
-    width: 100%;
-}
-img {
-    -ms-interpolation-mode:bicubic;
-}
-table[class=full] {
-    padding:0 !important;
-    border:none !important;
-}
-table td img[class=imgresponsive] {
-    width:100% !important;
-    height:auto !important;
-    display:block !important;
-}
-@media only screen and (max-width: 800px) {
-body {
- width:auto!important;
-}
-table[class=full] {
- width:100%!important;
-}
-table[class=devicewidth] {
- width:100% !important;
- padding-left:20px !important;
- padding-right: 20px!important;
-}
-table td img.responsiveimg {
- width:100% !important;
- height:auto !important;
- display:block !important;
-}
-}
-@media only screen and (max-width: 640px) {
-table[class=devicewidth] {
- width:100% !important;
-}
-table[class=inner] {
- width:100%!important;
- text-align: center!important;
- clear: both;
-}
-table td a[class=top-button] {
- width:160px !important;
-  font-size:14px !important;
- line-height:37px !important;
-}
-table td[class=readmore-button] {
- text-align:center !important;
-}
-table td[class=readmore-button] a {
- float:none !important;
- display:inline-block !important;
-}
-.hide {
- display:none !important;
-}
-table td[class=smallfont] {
- border:none !important;
- font-size:26px !important;
-}
-table td[class=sidespace] {
- width:10px !important;
-}
-}
- @media only screen and (max-width: 520px) {
-}
-@media only screen and (max-width: 480px) {
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
- table {
- border-collapse: collapse;
-}
-table td[class=template-img] img {
- width:100% !important;
- display:block !important;
-}
-}
-@media only screen and (max-width: 320px) {
-}
-</style>
+<head>
+  <title> {{emailType}} </title>
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--<![endif]-->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type="text/css">
+    #outlook a {
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    table,
+    td {
+      border-collapse: collapse;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }
+
+    img {
+      border: 0;
+      height: auto;
+      line-height: 100%;
+      outline: none;
+      text-decoration: none;
+      -ms-interpolation-mode: bicubic;
+    }
+
+    p {
+      display: block;
+      margin: 13px 0;
+    }
+  </style>
+  <!--[if mso]>
+        <noscript>
+        <xml>
+        <o:OfficeDocumentSettings>
+          <o:AllowPNG/>
+          <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+        </xml>
+        </noscript>
+        <![endif]-->
+  <!--[if lte mso 11]>
+        <style type="text/css">
+          .mj-outlook-group-fix { width:100% !important; }
+        </style>
+        <![endif]-->
+  <!--[if !mso]><!-->
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans);
+  </style>
+  <!--<![endif]-->
+  <style type="text/css">
+    @media only screen and (min-width:480px) {
+      .mj-column-per-100 {
+        width: 100% !important;
+        max-width: 100%;
+      }
+
+      .mj-column-px-480 {
+        width: 480px !important;
+        max-width: 480px;
+      }
+
+      .mj-column-per-27 {
+        width: 27% !important;
+        max-width: 27%;
+      }
+
+      .mj-column-per-46 {
+        width: 46% !important;
+        max-width: 46%;
+      }
+    }
+  </style>
+  <style media="screen and (min-width:480px)">
+    .moz-text-html .mj-column-per-100 {
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    .moz-text-html .mj-column-px-480 {
+      width: 480px !important;
+      max-width: 480px;
+    }
+
+    .moz-text-html .mj-column-per-27 {
+      width: 27% !important;
+      max-width: 27%;
+    }
+
+    .moz-text-html .mj-column-per-46 {
+      width: 46% !important;
+      max-width: 46%;
+    }
+  </style>
+  <style type="text/css">
+    @media only screen and (max-width:480px) {
+      table.mj-full-width-mobile {
+        width: 100% !important;
+      }
+
+      td.mj-full-width-mobile {
+        width: auto !important;
+      }
+    }
+  </style>
+  <style type="text/css">
+    @media all and (max-width: 600px) {
+      img[title*="img30"] {
+        width: 30% !important;
+      }
+    }
+  </style>
 </head>
-<body>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="full">
-  <tr>
-    <td height="54">&nbsp;</td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="full">
-  <tr>
-    <td align="center"><table width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="devicewidth">
-        <tr>
-          <td><table width="100%" bgcolor="#ffffff" border="0" cellspacing="0" cellpadding="0" align="center" class="full" style="border-radius:5px 5px 0 0; background-color:#ffffff;">
-              <tr>
-                <td height="29">&nbsp;</td>
-              </tr>
-              <tr>
-                <td><table border="0" cellspacing="0" cellpadding="0" align="left" class="inner" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
-                    <tr>
-                      <td width="23" class="hide">&nbsp;</td>
-                      <td height="75" class="inner" valign="middle"><a href="#"><img class="logo" src="images/logo.png" width="180" height="61" alt="Logo"></a></td>
-                    </tr>
-                  </table>
-                  <table width="150" border="0" cellspacing="0" cellpadding="0" align="right" class="inner" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
-                    <tr>
-                      <td height="15">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td align="center"><a href="#" class="top-button" style="font:bold 13px/37px Arial, Helvetica, sans-serif; color:#ffffff; text-decoration:none; background:#16c4a9; display:block; border-radius:24px; text-transform:uppercase;">View online</a></td>
-                      <td class="hide" width="20">&nbsp;</td>
-                    </tr>
-                  </table></td>
-              </tr>
-              <tr>
-                <td style="border-bottom:1px solid #dbdbdb;">&nbsp;</td>
-              </tr>
-            </table></td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="full">
-  <tr>
-    <td align="center"><table width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="devicewidth">
-        <tr>
-          <td><table width="100%" bgcolor="#313131" border="0" cellspacing="0" cellpadding="0" align="center" class="full" style=" background-image:url(images/white-bg.gif); background-repeat:repeat-x; background-position:left top;">
-              <tr>
-                <td height="23">&nbsp;</td>
-              </tr>
-              <tr>
-                <td align="center"><img src="images/picture.png" width="83" height="atuo" alt="picture" /></td>
-              </tr>
-              <tr>
-                <td height="23">&nbsp;</td>
-              </tr>
-             <tr>
-               <td align="center" style="font:300 20px 'Open Sans', Arial, Helvetica, sans-serif; color:#16c4a9;" class="smallfont">Hey {{username}}, here is the link <br>
-                 to Reset your Password.</td>
-             </tr>
-              <tr>
-                <td height="16">&nbsp;</td>
-              </tr>
-              <tr>
-                <td><table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-                    <tr>
-                      <td width="40%" height="2"></td>
-                      <td width="10%" height="2" style=" border-bottom:2px solid #ffffff;"></td>
-                      <td width="40%" height="2"></td>
-                    </tr>
-                  </table></td>
-              </tr>
-              <tr>
-                <td height="16">&nbsp;</td>
-              </tr>
-              <tr>
-                <td height="16">&nbsp;</td>
-              </tr>
-              <tr>
-                <td><table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-                    <tr>
-                      <td>&nbsp;</td>
-                      <td align="center" class="template-img"><img src="images/template.jpg" width="338" height="atuo" alt="Banner" /></td>
-                      <td>&nbsp;</td>
-                    </tr>
-                  </table></td>
-              </tr>
-              <tr>
-                <td height="25">&nbsp;</td>
-              </tr>
-              <tr>
-                <td><table width="100%" border="0" cellspacing="0" cellpadding="10" align="center">
-                    <tr>
-                      <td width="23" class="sidespace">&nbsp;</td>
-                      <td align="center" style="font:15px/19px Arial, Helvetica, sans-serif; color:#ffffff;">
-                         You're are getting this mail because you requested for password reset from <span style="color:#16c4a9;">REFEM (resume-followup-email-manager)</span>
-                       </td>
-                      <td width="23" class="sidespace">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td width="23" class="sidespace">&nbsp;</td>
-                      <td align="center" style="font:15px/19px Arial, Helvetica, sans-serif; color:#ffffff;">
-                         You can copy and paste the url below in your browser's address bar if the "Reset Password" button fails to work.
-                       </td>
-                      <td width="23" class="sidespace">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td width="23" class="sidespace">&nbsp;</td>
-                      <td align="center" style="color:#16c4a9;font-size: .6rem">
-                          {{full_link}}
-                       </td>
-                      <td width="23" class="sidespace">&nbsp;</td>
-                    </tr>
-                  </table></td>
 
-              </tr>
-              <tr>
-                <td height="25">&nbsp;</td>
-              </tr>
-              <tr>
-                <td align="center" class="readmore-button"><a href="{{full_link}}" style="font:bold 12px/29px Arial, Helvetica, sans-serif; color:#16c4a9; text-decoration:none; background:#ffffff; display:inline-block; padding:0 19px; border-radius:24px; text-transform:uppercase;">Reset Password</a></td>
-              </tr>
-              <tr>
-                <td height="16"></td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-              </tr>
-            </table></td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
-<!-- <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="full">
-  <tr>
-    <td align="center"><table width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="devicewidth">
-        <tr>
-          <td><table width="100%" bgcolor="#ffffff" border="0" cellspacing="0" cellpadding="0" align="center" class="full" style="border-radius:0 0 7px 7px;">
-              <tr>
-                <td height="18">&nbsp;</td>
-              </tr>
-              <tr>
-                <td><table class="inner" align="right" width="340" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; text-align:center;">
+<body style="word-spacing:normal;background-color:#ffffff;">
+  <div style="background-color:#ffffff;">
+    <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:0px;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                  <tbody>
                     <tr>
-                      <td width="21">&nbsp;</td>
-                      <td><table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-                          <tr>
-                            <td><table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="full">
-                                <tr>
-                                  <td align="center" style="font:11px Helvetica,  Arial, sans-serif; color:#ffffff;"><a style="color:#000000; text-decoration:none;" href="#"> View in browser</a></td>
-                                  <td style="color:#000000;"> | </td>
-                                  <td align="center" style="font:11px Helvetica,  Arial, sans-serif; color:#ffffff;"><a style="color:#000000; text-decoration:none;" href="http://localhost:5000/api/v1/auth/reset-password/{{token}}"> Reset Link</a></td>
-                                  <td style="color:#000000;"> | </td>
-                                  <td align="center" style="font:11px Helvetica,  Arial, sans-serif; color:#ffffff;"><a style="color:#000000; text-decoration:none;" href="#"> About REFEM</a></td>
-                                  <td class="hide" width="40" align="right">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                  <td height="18">&nbsp;</td>
-                                </tr>
-                              </table></td>
-                          </tr>
-                        </table></td>
+                      <td align="left" style="font-size:0px;padding:0px;word-break:break-word;">
+                        <div style="font-family:'Open Sans', 'Raleway', Arial, Verdana, sans-serif;font-size:1px;line-height:1px;text-align:left;color:#ffffff;"><span class="preheader" style="visibility: hidden; mso-hide: all; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; width: 100%; display: none;">Extended - Authentication Email
+                          </span></div>
+                      </td>
                     </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#f9f9f9" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="background:#f9f9f9;background-color:#f9f9f9;margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#f9f9f9;background-color:#f9f9f9;width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:0px;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                  <tbody>
+                    <tr>
+                      <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                        <div style="font-family:Open Sans, Arial, sans-serif;font-size:14px;letter-spacing:2px;line-height:26px;text-align:center;text-transform:uppercase;color:#111111;">New | {{emailType}}</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#f9f9f9" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="background:#f9f9f9;background-color:#f9f9f9;margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#f9f9f9;background-color:#f9f9f9;width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:0px;padding-bottom:50px;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:600px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:0px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                            <tbody>
+                              <tr>
+                                <td align="center" style="font-size:0px;padding:0px;word-break:break-word;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
+                                    <tbody>
+                                      <tr>
+                                        <td style="width:600px;">
+                                          <a href="http://www.ugg.com/" target="_blank">
+                                            <img alt="Model in UGG in a baby blue royale" height="auto" src="https://cdn.pixabay.com/photo/2021/08/04/13/06/software-developer-6521720_960_720.jpg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="600">
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:600px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:30px 0 20px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+                        <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                            <tbody>
+                              <tr>
+                                <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                  <div style="font-family:Big Caslon, Garamond, Times, serif;font-size:35px;line-height:36px;text-align:center;text-transform:uppercase;color:#111111;">{{headerType}}</div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><tr><td class="" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+              <div style="margin:0px auto;max-width:600px;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                  <tbody>
+                    <tr>
+                      <td style="direction:ltr;font-size:0px;padding:0px;text-align:center;">
+                        <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:480px;" ><![endif]-->
+                        <div class="mj-column-px-480 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                            <tbody>
+                              <tr>
+                                <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                  <div style="font-family:Open Sans, Arial, sans-serif;font-size:16px;line-height:26px;text-align:center;color:#111111;">
+                                    <div style="font-family:Montserrat, Helvetica, Arial, sans-serif;font-size:16px;font-weight:300;line-height:35px;text-align:left;color:#222222;"> Hello <b>{{username}}</b>, You're are getting this mail because you requested for <b>{{action}}</b> via <span style="color:#16c4a9;">REFEM (resume-followup-email-manager).</span>
+                                      <br> <br> The token generated will expire in  the next <b>{{tokenExpiration}}</b>, do well to {{emailType}} before the expiration time.
+                                      <br> <br> You can copy and paste the url below in your browser's address bar if the <b>"{{emailType}}"</b> button fails to work.<br> <br>
+                                    </div>
+                                    <span style="color:#16c4a9;">{{full_link}}</span><br> <br>
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td align="center" vertical-align="middle" style="font-size:0px;padding:15px 10px;word-break:break-word;">
+                                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;width:190px;line-height:100%;">
+                                    <tr>
+                                      <td align="center" bgcolor="#111111" role="presentation" style="border:none;border-radius:0px;cursor:auto;height:40px;mso-padding-alt:10px 25px;background:#111111;" valign="middle">
+                                        <a href="{{full_link}}" style="display:inline-block;width:140px;background:#111111;color:#f3b656;font-family:Open Sans, Arial, sans-serif;font-size:16px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;mso-padding-alt:0px;border-radius:0px;" target="_blank">
+                                          <span style="text-transform:uppercase; letter-spacing: 2px;">Verify Email</span>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!--[if mso | IE]></td></tr></table><![endif]-->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table></td></tr><![endif]--> &lt;!--[if !mso]&gt;&lt;\!--&gt;&lt;\!--&lt;![endif]--&gt;
+              <!--[if mso | IE]></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:25px 0 15px;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                  <tbody>
+                    <tr>
+                      <td align="center" style="font-size:0px;padding:0px;word-break:break-word;">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
+                          <tbody>
+                            <tr>
+                              <td style="width:168px;">
+                                <a href="http://www.ugg.com/" target="_blank">
+                                  <img alt="Find a store" height="auto" src="https://static.cdn.responsys.net/i2/responsysimages/uggs/contentlibrary/promotional/2017/06-june/20170615_u_royale-b/images/find-a-store.gif" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="168">
+                                </a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:0px;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                  <tbody>
+                    <tr>
+                      <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                        <div style="font-family:Open Sans, Arial;font-size:16px;font-weight:bold;letter-spacing:2px;line-height:1;text-align:center;text-transform:uppercase;color:#000000;">* REFEM, Nigeria.</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:10px 45px;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="width:510px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0;line-height:0;text-align:left;display:inline-block;width:100%;direction:ltr;">
+                <!--[if mso | IE]><table border="0" cellpadding="0" cellspacing="0" role="presentation" ><tr><td style="vertical-align:top;width:137px;" ><![endif]-->
+                <div class="mj-column-per-27 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:27%;">
+                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                    <tbody>
+                      <tr>
+                        <td align="center" style="font-size:0px;padding:7px 0;word-break:break-word;">
+                          <div style="font-family:Open Sans, Arial, sans-serif;font-size:12px;line-height:1;text-align:center;text-decoration:none;text-transform:uppercase;color:#000000;"><a href="http://www.ugg.com/" style="text-decoration:none; color:#111111" class="apple-link-black"><strong>live chat</strong></a></div>
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
-                  <table class="inner" align="left" width="230" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; text-align:center;">
+                </div>
+                <!--[if mso | IE]></td><td style="vertical-align:top;width:234px;" ><![endif]-->
+                <div class="mj-column-per-46 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:46%;">
+                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                    <tbody>
+                      <tr>
+                        <td align="center" style="font-size:0px;padding:7px 0;word-break:break-word;">
+                          <div style="font-family:Open Sans, Arial, sans-serif;font-size:11px;line-height:1;text-align:center;text-decoration:none;text-transform:uppercase;color:#000000;"><a href style="text-decoration:none; color:#111111" class="apple-link-black"><strong>call us</strong>
+                              <br>
+                              <br>
+                              <br> +234 (818) 432-187 </a></div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!--[if mso | IE]></td><td style="vertical-align:top;width:137px;" ><![endif]-->
+                <div class="mj-column-per-27 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:27%;">
+                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                    <tbody>
+                      <tr>
+                        <td align="center" style="font-size:0px;padding:7px 0;word-break:break-word;">
+                          <div style="font-family:Open Sans, Arial, sans-serif;font-size:12px;line-height:1;text-align:center;text-decoration:none;text-transform:uppercase;color:#000000;"><a href="http://www.ugg.com/" style="text-decoration:none; color:#111111;" class="apple-link-black"><strong>email us</strong></a>
+                            <br>
+                            <br>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!--[if mso | IE]></td></tr></table><![endif]-->
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div style="margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:0px;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+                  <tbody>
                     <tr>
-                      <td width="21">&nbsp;</td>
-                      <td><table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-                          <tr>
-                            <td align="center" style="font:11px Helvetica,  Arial, sans-serif; color:#000000;">&copy; 2022, All rights reserved </td>
-                          </tr>
-                          <tr>
-                            <td height="18">&nbsp;</td>
-                          </tr>
-                        </table></td>
-                      <td width="21">&nbsp;</td>
+                      <td align="center" style="font-size:0px;padding:0 10px;word-break:break-word;">
+                        <div style="font-family:Open Sans, Arial, sans-serif;font-size:10px;line-height:14px;text-align:center;color:#111111;">
+                          <p style="Margin:0; padding-bottom:10px; font-size:10px; line-height:15px; Margin-bottom:10px; color:#111111; font-family: 'Open Sans', 'Raleway', Arial, Helvetica, sans-serif;">We only send mail to the recruiter's address entered by our users while filling-out our online form: <a href="http://www.ugg.com/" name="footer_ugghomepage" style="color:#111111; text-decoration:underline;">www.refem.com</a>
+                          </p>
+                          <p style="Margin:0; padding-bottom:10px; font-size:10px; line-height:15px; Margin-bottom:10px; color:#111111; font-family: 'Open Sans', 'Raleway', Arial, Helvetica, sans-serif;">*REFEM, short for résumé-followup-email-manager is an app that allows you to send potential employers (maybe the recruiters) a followup email just to remind them that you are still interested in the Job in Question. </p>
+                          <p style="Margin:0; padding-bottom:10px; font-size:10px; line-height:15px; Margin-bottom:10px; color:#111111; font-family: 'Open Sans', 'Raleway', Arial, Helvetica, sans-serif;">
+                            <span style="color:#111111 !important; text-decoration:none;">
+                              <strong>234.8181.432.187</strong>
+                              <br> 29 Upper Nohuwa Street, Benin City. </span>
+                            <br>
+                            <br>
+                            <br>
+                            <a href="https://email.ugg.com/pub/sf/ResponseForm?_ri_=X0Gzc2X%3DYQpglLjHJlTQGjmR9kDzfwzbMzackp9f3F8d45ze2zfbW8hYB6AzgB7gaIYB3tN5qwvasVXMtX%3DYQpglLjHJlTQGNXlMNF3fFUYHWCzdBj2rGzgJpzem2KonGoezgzbfUyABevzgl4CepTMC&_ei_=EolaGGF4SNMvxFF7KucKuWP7XpARYKtbBY43fLBYxvXNpGx2Z89j4M" style="text-decoration:underline; color:#111111;">View in Browser</a>
+                          </p>
+                        </div>
+                      </td>
                     </tr>
-                  </table></td>
-              </tr>
-            </table></td>
-        </tr>
-        <tr>
-          <td height="20">&nbsp;</td>
-        </tr>
-      </table></td>
-  </tr>
-</table> -->
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><![endif]-->
+  </div>
 </body>
+
 </html>

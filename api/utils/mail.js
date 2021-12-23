@@ -1,6 +1,7 @@
 const UserModel = require("../models/User");
 const MailModel = require("../models/Mail");
 const { validateEmail, lengthValidator } = require("./logic");
+const Role = require("./role");
 const bcrypt = require("bcrypt");
 // Since countryData.json is static, it is okay to use "require" to read its JSON content.
 let countryData = require("../json/countryData");
@@ -18,36 +19,105 @@ const USER = process.env.GMAIL_APP_USER;
 const PASS = process.env.GMAIL_APP_PASSWORD;
 const HOST = process.env.GMAIL_HOST;
 const PORT = process.env.GMAIL_PORT;
+const MAX_API_HOURS = process.env.MAX_API_HOURS;
+// A User can only make 50 API calls in a day.
+// Admin can make up to 100,000 API calls every 24 hours. 
+const MAX_API_CALL = Role.User? process.env.MAX_API_CALL: process.env.MAX_ADMIN_API_CALL
 
-const getUserData = async (param) => {
-  const user = await UserModel.findOne({ _id: param.userId })
-    .select([
-      "-_id",
-      "-__v",
-      "-password",
-      "-repeatPassword",
-      "-resetToken",
-      "-expireToken",
-    ])
-    .populate("ipGeo", "mails", "resume");
+const getUserData = async (req) => {
+  const apiKey = req.headers["api-key"];
+  const user = req.user._id
+    ? await UserModel.findOne({ _id: req.user._id })
+    : await UserModel.findOne({ apiKey })
+        .select([
+          "-_id",
+          "-__v",
+          "-password",
+          "-repeatPassword",
+          "-resetToken",
+          "-expireToken",
+          "-apiKey",
+        ])
+        .populate("ipGeo", "mails", "resume");
   return user;
 };
 
-const getUserResumeData = async (param) => {
-  const user = await UserModel.findOne({ _id: param.userId })
-    .select(["resume"])
-    .populate("resume");
+const getUserResumeData = async (req) => {
+  const apiKey = req.headers["api-key"];
+  const user = req.user._id
+    ? await UserModel.findOne({ _id: req.user._id })
+    : await UserModel.findOne({ apiKey }).select(["resume"]).populate("resume");
   return user;
 };
 
 const updateUserWithMails = async (req) => {
   const newMail = await MailModel.create(req.mail);
   const newMailId = await newMail._id;
-  const userUpdate = await UserModel.findOneAndUpdate(
-    { _id: req.params.userId },
-    { $push: { mails: newMailId } },
-    { new: true }
-  );
+  const apiKey = req.headers["api-key"];
+
+  const userUpdate = req.user._id
+    ? await UserModel.findOneAndUpdate(
+        { _id: req.user._id },
+        { $push: { mails: newMailId } },
+        { new: true }
+      )
+    : await UserModel.findOneAndUpdate(
+        { apiKey },
+        { $push: { mails: newMailId } },
+        { new: true }
+      );
+  return userUpdate;
+};
+
+const isMaxApiCall = async (req) => {
+  const user = req.user._id
+    ? await UserModel.findOneAndUpdate({ _id: req.user._id }, { new: true })
+    : await UserModel.findOneAndUpdate({ apiKey }, { new: true });
+
+  if (user.usage.count >= MAX_API_CALL) {
+    return true;
+  }
+  return false;
+};
+
+const updateUserWithUsageStat = async (req) => {
+  const apiKey = req.headers["api-key"];
+  const userUpdate = req.user._id
+    ? await UserModel.findOneAndUpdate({ _id: req.user._id }, { new: true })
+    : await UserModel.findOneAndUpdate({ apiKey }, { new: true });
+
+  const initialDate = userUpdate.usage.date;
+  // add 24hours to the initial date of usageStat
+  const initialDate24 = initialDate
+    .setHours(initialDate.getHours() + MAX_API_HOURS)
+    .toString();
+
+  if (initialDate24 <= Date.now().toString()) {
+    // Checking if it's up to 24 hours since the last usage.count was recorded.
+    req.user._id
+      ? await UserModel.findOneAndUpdate(
+          { _id: req.user._id },
+          { $set: { "usage.count": 0, "usage.date": new Date() } },
+          { new: true }
+        )
+      : await UserModel.findOneAndUpdate(
+          { apiKey },
+          { $set: { "usage.count": 0, "usage.date": new Date() } },
+          { new: true }
+        );
+  } else {
+    req.user._id
+      ? await UserModel.findOneAndUpdate(
+          { _id: req.user._id },
+          { $inc: { "usage.count": 1 } },
+          { new: true }
+        )
+      : await UserModel.findOneAndUpdate(
+          { apiKey },
+          { $inc: { "usage.count": 1 } },
+          { new: true }
+        );
+  }
   return userUpdate;
 };
 
@@ -110,74 +180,84 @@ const sendMailInstanceAndReturnJSON = () => {
     mail.positionType = positionType;
     mail.templateType = templateType;
 
-    // try {
-      updateUserWithMails(req);
-      if (
-        subjectLine &&
-        recruiterEmail &&
-        resumeSubmissionDate &&
-        companyName &&
-        positionType &&
-        templateType
-      ) {
-        const transporter = nodemailer.createTransport({
-          host: HOST,
-          port: PORT,
-          auth: {
-            user: USER,
-            pass: PASS,
+    try {
+    updateUserWithMails(req);
+    if (
+      subjectLine &&
+      recruiterEmail &&
+      resumeSubmissionDate &&
+      companyName &&
+      positionType &&
+      templateType
+    ) {
+      const transporter = nodemailer.createTransport({
+        host: HOST,
+        port: PORT,
+        auth: {
+          user: USER,
+          pass: PASS,
+        },
+        secure: true,
+        tls: {
+          rejectUnauthorized: false,
+        },
+      });
+
+      const recruiter = recruiterName ? ` ${recruiterName},` : ",";
+      const positionTypeStatus =
+        positionType === "Frontend"
+          ? "user interfaces and great experiences"
+          : "applications";
+
+      const emailData = {
+        positionType,
+        positionTypeStatus,
+        subjectLine,
+        recruiter,
+        recruiterEmail,
+        resumeSubmissionDate,
+        companyName,
+        templateType,
+      };
+
+      const mainSender = await getUserData(req);
+      const userResume = await getUserResumeData(req);
+
+      const senderData = {
+        name: `${mainSender.firstname} ${mainSender.lastname}`,
+        phone: mainSender.phoneNumber,
+        mail: mainSender.email,
+        ...(userResume.resume && {
+          attachment: {
+            name: `Resume.${userResume.resume.format}`,
+            link: userResume.resume.link,
           },
-          secure: true,
-          tls: {
-            rejectUnauthorized: false,
-          },
+        }),
+      };
+      const hybridData = {
+        email: emailData,
+        sender: senderData,
+      };
+
+      const maxApiCall = await isMaxApiCall(req);
+
+      if (maxApiCall) {
+        return res.status(429).json({
+          msg: "Maximum API Calls exceeded!",
+          _help: `Here at REFEM, we offer ${MAX_API_CALL} API calls for every ${MAX_API_HOURS} hours`,
         });
-
-        const recruiter = recruiterName ? ` ${recruiterName},` : ",";
-        const positionTypeStatus =
-          positionType === "Frontend"
-            ? "user interfaces and great experiences"
-            : "applications";
-
-        const emailData = {
-          positionType,
-          positionTypeStatus,
-          subjectLine,
-          recruiter,
-          recruiterEmail,
-          resumeSubmissionDate,
-          companyName,
-          templateType,
-        };
-
-        const mainSender = await getUserData(req.params);
-        const userResume = await getUserResumeData(req.params);
-
-        const senderData = {
-          name: `${mainSender.firstname} ${mainSender.lastname}`,
-          phone: mainSender.phoneNumber,
-          mail: mainSender.email,
-          ...(userResume.resume && {
-            attachment: {
-              name: `Resume.${userResume.resume.format}`,
-              link: userResume.resume.link,
-            },
-          }),
-        };
-        const hybridData = {
-          email: emailData,
-          sender: senderData,
-        };
-
-        const execEmail = await sendMail(userResume, hybridData, transporter);
-        res.status(execEmail.status).json(execEmail);
       }
-    // } catch (err) {
-    //   res.status(400).json({
-    //     msg: "Something went wrong!",
-    //     err: err,
-    //   });
-    // }
+
+      const execEmail = await sendMail(userResume, hybridData, transporter);
+      updateUserWithUsageStat(req);
+      return res.status(execEmail.status).json(execEmail);
+    }
+    } catch (err) {
+      res.status(400).json({
+        msg: "Something went wrong!",
+        err: err,
+      });
+    }
   };
 };
 
@@ -190,62 +270,62 @@ const sendMail = async (ms, data, mailSender) => {
         }
       mailSender => The nodemailer transporter Object
     */
-  // try {
-    const readFile = promisify(fs.readFile);
-    let html =
-      data.email.templateType === "Email01"
-        ? await readFile(`template/employerEmail/email.html`, "utf8")
-        : await readFile(`template/employerEmail/email2.html`, "utf8");
+  try {
+  const readFile = promisify(fs.readFile);
+  let html =
+    data.email.templateType === "Email01"
+      ? await readFile(`template/employerEmail/email.html`, "utf8")
+      : await readFile(`template/employerEmail/email2.html`, "utf8");
 
-    let template = handlebars.compile(html);
+  let template = handlebars.compile(html);
 
-    let htmlToSend = template(data);
-    const mailOptions = {
-      from: "APPLICANT - JOB POSTING <refem.applicants@gmail.com>",
-      // An email address that will appear on the Reply-To: field
-      replyTo: data.sender.mail,
-      to: data.email.recruiterEmail,
-      subject: data.email.subjectLine,
-      html: htmlToSend,
-      ...(ms.resume && {
-        attachments: [
-          {
-            filename: data.sender.attachment.name,
-            path: data.sender.attachment.link,
-          },
-        ],
-      }),
-    };
-    mailSender.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        return {
-          status: 400,
-          message: "Opps...Sending Email failed!",
-          sent: false,
-          err: err,
-        };
-      }
+  let htmlToSend = template(data);
+  const mailOptions = {
+    from: "APPLICANT - JOB POSTING <refem.applicants@gmail.com>",
+    // An email address that will appear on the Reply-To: field
+    replyTo: data.sender.mail,
+    to: data.email.recruiterEmail,
+    subject: data.email.subjectLine,
+    html: htmlToSend,
+    ...(ms.resume && {
+      attachments: [
+        {
+          filename: data.sender.attachment.name,
+          path: data.sender.attachment.link,
+        },
+      ],
+    }),
+  };
+  mailSender.sendMail(mailOptions, (err, info) => {
+    if (err) {
       return {
-        status: 200,
-        message:
-          "Email Sent succesfully. You can check your dashboard to see Mail History!",
-        sent: true,
+        status: 400,
+        message: "Opps...Sending Email failed!",
+        sent: false,
+        err: err,
       };
-    });
+    }
     return {
       status: 200,
       message:
         "Email Sent succesfully. You can check your dashboard to see Mail History!",
       sent: true,
     };
-  // } catch (err) {
-  //   return {
-  //     status: 400,
-  //     message: "Something went wrong. Try again.",
-  //     sent: false,
-  //     err: err,
-  //   };
-  // }
+  });
+  return {
+    status: 200,
+    message:
+      "Email Sent succesfully. You can check your dashboard to see Mail History!",
+    sent: true,
+  };
+  } catch (err) {
+    return {
+      status: 400,
+      message: "Something went wrong. Try again.",
+      sent: false,
+      err: err,
+    };
+  }
 };
 
 module.exports = {
