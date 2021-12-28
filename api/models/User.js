@@ -145,5 +145,13 @@ UserSchema.pre("save", function(next) {
 });
 
 
+// get the token
+// UserSchema.methods.jwtGenerateToken = function(){
+//     return jwt.sign({id: this.id}, process.env.JWT_SECRET, {
+//         expiresIn: "3h"
+//     });
+// }
+
+
 
 module.exports = mongoose.model("user", UserSchema, "User Collection");

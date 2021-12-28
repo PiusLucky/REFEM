@@ -288,7 +288,29 @@ const sendMail = async (isVerify, user, mailSender) => {
   }
 };
 
+const createCookieCumStatus = async (access, statusCode, res) => {
+  const ENVIRONMENT = process.env.NODE_ENV;
+  const options = {
+    // domain: 'http://localhost:3000',
+    httpOnly: true,
+    // expires in the next 3hours
+    expires: new Date(Date.now() + 10800000),
+    secure: ENVIRONMENT !== "development",
+  };
+
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Credentials',true);
+
+  res.cookie("authToken", access.token, options);
+
+  res.status(200).json({
+    msg: "Success, Redirecting now...",
+    token: ""
+  });
+};
+
 module.exports = {
   saveUserInstanceAndReturnJSON,
   sendMail,
+  createCookieCumStatus,
 };

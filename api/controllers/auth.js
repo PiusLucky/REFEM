@@ -1,12 +1,11 @@
 const router = require("express").Router();
 const UserModel = require("../models/User");
 const bcrypt = require("bcrypt");
-const { sendMail } = require("../utils/auth");
+const { sendMail, createCookieCumStatus } = require("../utils/auth");
 const { validateEmail, strengthChecker } = require("../utils/logic");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
-
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -25,9 +24,6 @@ const registerUser = async (req, res, next) => {
   next();
 };
 
-
-
-
 // @desc    Login an existing user
 // @route   POST /api/v1/auth/login
 // @access  Public
@@ -40,16 +36,25 @@ const loginUser = async (req, res) => {
       email: req.body.username_email.toLowerCase(),
     });
 
-    !user_detect_1 && !user_detect_2 && res.status(404).json({
-      msg: "User not found", 
-      _help: "Make sure correct details entered during registration are provided!"
-    });
+    if (!user_detect_1 && !user_detect_2) {
+      return res.status(404).json({
+        msg: "User not found",
+        _help:
+          "Make sure correct details entered during registration are provided!",
+      });
+    }
 
     const validPassword = await bcrypt.compare(
       req.body.password,
       user_detect_1 ? user_detect_1.password : user_detect_2.password
     );
-    !validPassword && res.status(400).json("Wrong password");
+
+    if(!validPassword) return res.status(400).json({
+      msg: "Wrong Password",
+      _help:
+        "The password entered is'nt a match for the requested User.",
+    }); 
+    
 
     // What you specify here is what the payload will look like
     const token = jwt.sign(
@@ -61,9 +66,26 @@ const loginUser = async (req, res) => {
       { expiresIn: "3h" }
     );
 
-    res.header("auth-token", token).send(token);
+    // res.header("auth-token", token).status(200).json({
+    //   token: token
+    // })
+
+    const mainId = user_detect_1 ? user_detect_1._id : user_detect_2._id;
+
+    const retrievedUser = await UserModel.findOne({
+      _id: mainId,
+    });
+
+    const userAPIKey = retrievedUser.apiKey;
+
+    const access = {
+      token,
+      userAPIKey,
+    };
+
+    createCookieCumStatus(access, 200, res);
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       msg: "Sorry, can't log in at this time. Try again later!",
       _help: "Check the internet connectivity (or strength) of your device.",
     });
@@ -71,7 +93,30 @@ const loginUser = async (req, res) => {
 };
 
 
+// @desc    let's get loggedIn user data
+// @route   POST /api/v1/auth/loggedIn
+// @access  Public
+const loggedIn = async (req, res) => {
+  const token = req.cookies.authToken;
+  console.log(token);
+  try {
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET, (err) => {
+        if (err) {
+          return res.json(false);
+        } else {
+          return res.json(true);
+        }
+      });
+    } else {
+      return res.json(false);
+    }
+    
+  } catch (error) {
+    return res.json(false);
+  }
 
+};
 
 // @desc    Can't remember password? Send mail for reset.
 // @route   POST /api/v1/auth/forgot-password
@@ -119,13 +164,8 @@ const forgotPassword = async (req, res) => {
     }
 
     specific_user.resetToken = token;
-    /** 
-      Use this link => https://www.online-toolz.com/tools/date-functions.php
-      Reset Token will expire in the next one hour.
-        1637544994000 = Mon Nov 22 2021 02:36:34 GMT+0100 (West Africa Standard Time)
-        1637544994000 + 3600000 = Mon Nov 22 2021 03:36:34 GMT+0100 (West Africa Standard Time)
-    */
-    specific_user.expireToken = Date.now() + 3600000;
+
+    specific_user.expireToken = Date.now() + process.env.PASSWORD_LINK_EXPIRE;
 
     const sendEmail = await sendMail(isVerify, specific_user, transporter);
 
@@ -135,9 +175,6 @@ const forgotPassword = async (req, res) => {
     return res.json({ message: sendEmail.message });
   });
 };
-
-
-
 
 // @desc    Reset an existing user password
 // @route   POST /api/v1/auth/password-reset
@@ -182,9 +219,6 @@ const resetPassword = async (req, res) => {
     });
   }
 };
-
-
-
 
 // @desc    Verify email on signup.
 // @route   POST /api/v1/auth/email-verify
@@ -247,7 +281,7 @@ const activationCode = async (req, res) => {
 
   const userVerified = await UserModel.findOne({
     email,
-    isVerified: true
+    isVerified: true,
   });
 
   if (!userExist) {
@@ -265,51 +299,49 @@ const activationCode = async (req, res) => {
   }
 
   try {
-  const API_LINK = process.env.API_LINK;
-  const transporter = nodemailer.createTransport({
-    host: HOST,
-    port: PORT,
-    auth: {
-      user: USER,
-      pass: PASS,
-    },
-    secure: true,
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
+    const API_LINK = process.env.API_LINK;
+    const transporter = nodemailer.createTransport({
+      host: HOST,
+      port: PORT,
+      auth: {
+        user: USER,
+        pass: PASS,
+      },
+      secure: true,
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
 
-
-  crypto.randomBytes(32, async (err, buffer) => {
-    if (err) {
-      return {
-        status: 400,
-        err,
-      };
-    }
-    const isVerified = true;
-    const token = buffer.toString("hex");
-    userExist.verifyToken = token;
-    /** 
+    crypto.randomBytes(32, async (err, buffer) => {
+      if (err) {
+        return {
+          status: 400,
+          err,
+        };
+      }
+      const isVerified = true;
+      const token = buffer.toString("hex");
+      userExist.verifyToken = token;
+      /** 
       Use this link => https://www.online-toolz.com/tools/date-functions.php
       Reset Token will expire in the next 30 minutes.
     */
-    userExist.vExpireToken = Date.now() + 1800000;
+      userExist.vExpireToken = Date.now() + process.env.ACTIVATION_LINK_EXPIRE;
 
-    const user = await userExist.save();
+      const user = await userExist.save();
 
-    if (user) {
-      const mail = await sendMail(isVerified, user, transporter);
-      if (mail.status === 200) {
-        res.status(400).json({
-          status: 200,
-          message:
-            "Verification Code sent via email. Please, check your mailbox!",
-        })
+      if (user) {
+        const mail = await sendMail(isVerified, user, transporter);
+        if (mail.status === 200) {
+          res.status(400).json({
+            status: 200,
+            message:
+              "Verification Code sent via email. Please, check your mailbox!",
+          });
+        }
       }
-    }
-  });
-
+    });
   } catch (err) {
     res.status(400).json({
       message: "Oops, activation code could not be sent. Try again...",
@@ -325,4 +357,5 @@ module.exports = {
   resetPassword,
   verifyEmail,
   activationCode,
+  loggedIn
 };

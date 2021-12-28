@@ -7,6 +7,7 @@ const {
     resetPassword,
     verifyEmail,
     activationCode,
+    loggedIn
 } = require("../controllers/auth");
 
 const router = express.Router();
@@ -16,6 +17,9 @@ router.post("/register", registerUser, saveUserInstanceAndReturnJSON());
 
 // Login Route
 router.post("/login", loginUser);
+
+// Route to get loggedIn user data
+router.post("/loggedIn", loggedIn);
 
 // Forgot Password Route
 router.post("/forgot-password", forgotPassword);

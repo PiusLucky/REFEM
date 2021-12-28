@@ -2,9 +2,11 @@ const UserModel = require("../models/User");
 const jwt = require("jsonwebtoken");
 
 const authMiddleware = async (req, res, next) => {
-  const token = req.header("auth-token");
+  // const token = req.header("auth-token"); // headers only
+  const token = req.cookies.authToken; // httpOnly cookie
+
   // apiKey referenced as userId for better sync with req.params
-  const apiKey = req.header("api-key");
+  const apiKey = req.header("api-key"); // headers only
 
   if (!token && !apiKey) {
     return res.status(401).json({
@@ -14,12 +16,12 @@ const authMiddleware = async (req, res, next) => {
     });
   }
 
-  if (token && apiKey) {
-    return res.status(401).json({
-      msg: "Using multiple authentication keys isn't allowed!",
-      _help: "Please use either the token access or the apiKey, not both",
-    });
-  }
+  // if (token && apiKey) {
+  //   return res.status(401).json({
+  //     msg: "Using multiple authentication keys isn't allowed!",
+  //     _help: "Please use either the token access or the apiKey, not both",
+  //   });
+  // }
 
   if (apiKey) {
     const user = await UserModel.findOne({ apiKey })

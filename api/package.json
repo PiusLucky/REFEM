@@ -4,7 +4,7 @@
   "description": "A resume email followup manager\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[C\u001b[C\u001b[CREFEM => short for resume-followup-email-manager is an app that allows you to send potential employers ()\u001b[Dmaybe the recruiters) emails \u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D a followup email just to remind them that you care about them and really looking forward to working with them. It's gonna be huge.",
   "main": "index.js",
   "scripts": {
-    "refem": "nodemon server.js"
+    "refem-backend": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -30,9 +30,12 @@
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.27.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
+    "express-jwt": "^6.1.0",
     "handlebars": "^4.7.7",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.3.0",

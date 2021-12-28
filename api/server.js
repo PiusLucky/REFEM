@@ -6,7 +6,9 @@ const ProfileRouter = require("./routes/profile");
 const EmailModelRouter = require("./routes/sendMail");
 const ResumeModelRouter = require("./routes/uploadResume");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const fileupload = require("express-fileupload");
+const cookieParser = require('cookie-parser');
 
 dotenv.config();
 
@@ -14,6 +16,25 @@ const app = express();
 
 // body-parser
 app.use(bodyParser.json());
+
+const corsOptions = {
+    origin: [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'http://localhost:3000/dashboard',
+    ],
+    credentials: true,
+};
+
+
+app.use((cors(corsOptions)))
+
+
+
+// cookie-parser
+app.use(cookieParser());
+
+
 
 // express fileupload
 app.use(
@@ -49,3 +70,6 @@ app.use("/api/v1/resume-upload", ResumeModelRouter);
 
 
 app.listen(5000);
+
+
+module.exports = app
