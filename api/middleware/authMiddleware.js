@@ -36,16 +36,8 @@ const authMiddleware = async (req, res, next) => {
       ])
       .populate("mails", "resume");
 
-    if (user.isVerified) {
       req.user = user;
       return next();
-    } else {
-      return res.status(401).json({
-        msg: "Unverified Account",
-        _help:
-          "Please verify your account by using the LINK sent to you via mail.",
-      });
-    }
   }
 
   if (token) {
@@ -62,16 +54,9 @@ const authMiddleware = async (req, res, next) => {
           "-vExpireToken",
         ])
         .populate("mails", "resume");
-      if (user.isVerified) {
+
         req.user = user;
         return next();
-      } else {
-        return res.status(401).json({
-          msg: "Unverified Account",
-          _help:
-            "Please verify your account by using the LINK sent to you via mail.",
-        });
-      }
     } catch (err) {
       return res.status(400).json({
         msg: "Invalid Token",

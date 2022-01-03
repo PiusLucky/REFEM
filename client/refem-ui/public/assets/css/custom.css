@@ -1,0 +1,69 @@
+#lock-svg {
+  opacity: 0.5;
+}
+
+.step-list .circle {
+  /*margin: 0 auto;*/
+  position: relative;
+  z-index: 2;
+}
+
+.step-list li:not(:first-child):before {
+  top: 1rem;
+  z-index: 1;
+}
+
+.step-list li.active:before {
+  background-color: var(--bs-primary);
+}
+
+.circle-lg {
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  font-size: 1.5rem;
+}
+
+.reduce-font {
+  font-size: 0.7rem;
+}
+
+.zero-m-bottom {
+  margin-bottom: 1rem !important;
+}
+
+@media screen and (max-width: 767px) {
+  .step-list .h5,
+  .step-list h5 {
+    font-size: 0.7rem;
+  }
+}
+
+.custom-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-flex--progressbar {
+  margin: 0% auto;
+}
+
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::after,
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::before {
+  display: none !important;
+}
+
+.customize-body {
+  height: calc(100vh - 16.5625rem);
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+
+.only-on-load{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

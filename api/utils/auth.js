@@ -51,7 +51,7 @@ const getIpInfo = async () => {
 };
 
 const saveUserInstanceAndReturnJSON = () => {
-  const API_LINK = process.env.API_LINK;
+  const FRONTEND_LINK = process.env.FRONTEND_LINK;
   const USER = process.env.GMAIL_APP_USER;
   const PASS = process.env.GMAIL_APP_PASSWORD;
   const HOST = process.env.GMAIL_HOST;
@@ -243,7 +243,7 @@ const saveUserInstanceAndReturnJSON = () => {
 
 const sendMail = async (isVerify, user, mailSender) => {
   try {
-    const API_LINK = process.env.API_LINK;
+    const FRONTEND_LINK = process.env.FRONTEND_LINK;
     const readFile = promisify(fs.readFile);
 
     let html = await readFile("template/html/email.html", "utf8");
@@ -253,12 +253,14 @@ const sendMail = async (isVerify, user, mailSender) => {
     const savedUser = await user.save();
 
     const token = isVerify ? savedUser.verifyToken : savedUser.resetToken;
+    const email = savedUser.email
 
     const urlPart = isVerify ? "email-verify" : "password-reset";
 
     let data = {
       username: savedUser.username,
-      full_link: `${API_LINK}/auth/${urlPart}?token=${token}`,
+      full_link: `${FRONTEND_LINK}/${urlPart}?email=${email}&token=${token}`,
+      frontend_link: FRONTEND_LINK,
       emailType: !isVerify ? "Reset Password" : "Verify Email",
       headerType: !isVerify ? "PASSWORD RESET" : "VERIFICATION",
       action: !isVerify ? "Password Reset" : "Account Verification",
@@ -288,24 +290,22 @@ const sendMail = async (isVerify, user, mailSender) => {
   }
 };
 
-const createCookieCumStatus = async (access, statusCode, res) => {
+const setHttpOnlyCookie = async(access, res) => {
   const ENVIRONMENT = process.env.NODE_ENV;
   const options = {
-    // domain: 'http://localhost:3000',
     httpOnly: true,
     // expires in the next 3hours
     expires: new Date(Date.now() + 10800000),
     secure: ENVIRONMENT !== "development",
   };
 
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.setHeader('Access-Control-Allow-Credentials',true);
-
   res.cookie("authToken", access.token, options);
+};
 
+const createCookieCumStatus = async (access, statusCode, res) => {
+  await setHttpOnlyCookie(access, res)
   res.status(200).json({
-    msg: "Success, Redirecting now...",
-    token: ""
+    msg: "Success, Redirecting now..."
   });
 };
 
@@ -313,4 +313,5 @@ module.exports = {
   saveUserInstanceAndReturnJSON,
   sendMail,
   createCookieCumStatus,
+  setHttpOnlyCookie
 };

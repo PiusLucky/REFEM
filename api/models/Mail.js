@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+
+
 const MailSchema = new mongoose.Schema(
   {
     subjectLine: {
@@ -11,8 +13,6 @@ const MailSchema = new mongoose.Schema(
     },
     recruiterName: {
       type: String,
-      minlength: 2,
-      maxlength: 40,
       trim: true,
     },
     recruiterEmail: {
@@ -44,6 +44,7 @@ const MailSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    timeSinceSubmitted: String,
   },
   { timestamps: true }
 );

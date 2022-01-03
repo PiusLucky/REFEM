@@ -1,4 +1,5 @@
 const express = require("express");
+const  authMiddleware = require('../middleware/authMiddleware')
 const { saveUserInstanceAndReturnJSON } = require("../utils/auth");
 const {
     registerUser,
@@ -7,8 +8,11 @@ const {
     resetPassword,
     verifyEmail,
     activationCode,
-    loggedIn
+    loggedIn,
+    logout
 } = require("../controllers/auth");
+
+
 
 const router = express.Router();
 
@@ -19,7 +23,7 @@ router.post("/register", registerUser, saveUserInstanceAndReturnJSON());
 router.post("/login", loginUser);
 
 // Route to get loggedIn user data
-router.post("/loggedIn", loggedIn);
+router.get("/loggedIn", authMiddleware, loggedIn());
 
 // Forgot Password Route
 router.post("/forgot-password", forgotPassword);
@@ -32,6 +36,9 @@ router.post("/email-verify", verifyEmail);
 
 // Reset Password Route
 router.post("/resend-activation-code", activationCode);
+
+// Logout Route
+router.get('/logout', logout);
 
 // detail page of a specific post based on unique slug
 // router.get('/:slug', async (req, res) => {

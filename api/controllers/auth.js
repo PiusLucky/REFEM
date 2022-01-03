@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const UserModel = require("../models/User");
 const bcrypt = require("bcrypt");
-const { sendMail, createCookieCumStatus } = require("../utils/auth");
+const { sendMail, createCookieCumStatus, setHttpOnlyCookie } = require("../utils/auth");
 const { validateEmail, strengthChecker } = require("../utils/logic");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -49,18 +49,16 @@ const loginUser = async (req, res) => {
       user_detect_1 ? user_detect_1.password : user_detect_2.password
     );
 
-    if(!validPassword) return res.status(400).json({
-      msg: "Wrong Password",
-      _help:
-        "The password entered is'nt a match for the requested User.",
-    }); 
-    
+    if (!validPassword)
+      return res.status(400).json({
+        msg: "Wrong Password",
+        _help: "The password entered is'nt a match for the requested User.",
+      });
 
     // What you specify here is what the payload will look like
     const token = jwt.sign(
       {
         id: user_detect_1 ? user_detect_1._id : user_detect_2._id,
-        role: user_detect_1 ? user_detect_1.role : user_detect_2.role,
       },
       process.env.JWT_SECRET,
       { expiresIn: "3h" }
@@ -83,7 +81,7 @@ const loginUser = async (req, res) => {
       userAPIKey,
     };
 
-    createCookieCumStatus(access, 200, res);
+    await createCookieCumStatus(access, 200, res);
   } catch (err) {
     return res.status(500).json({
       msg: "Sorry, can't log in at this time. Try again later!",
@@ -92,30 +90,24 @@ const loginUser = async (req, res) => {
   }
 };
 
-
 // @desc    let's get loggedIn user data
 // @route   POST /api/v1/auth/loggedIn
 // @access  Public
-const loggedIn = async (req, res) => {
-  const token = req.cookies.authToken;
-  console.log(token);
-  try {
-    if (token) {
-      jwt.verify(token, process.env.JWT_SECRET, (err) => {
-        if (err) {
-          return res.json(false);
-        } else {
-          return res.json(true);
-        }
+const loggedIn = () => {
+  return async (req, res) => {
+    try {
+      const user = await req.user;
+      return res.status(200).json({
+        status: 200,
+        info: user,
       });
-    } else {
-      return res.json(false);
+    } catch (err) {
+      return res.status(401).json({
+        status: 401,
+        err: err,
+      });
     }
-    
-  } catch (error) {
-    return res.json(false);
-  }
-
+  };
 };
 
 // @desc    Can't remember password? Send mail for reset.
@@ -225,14 +217,15 @@ const resetPassword = async (req, res) => {
 // @access  Public
 const verifyEmail = async (req, res) => {
   const sentToken = req.query.token;
-
-  const userVerified = await UserModel.findOne({
-    verifyToken: "",
-    isVerified: true,
+  const email = req.query.email;
+  const isUserVerified = await UserModel.findOne({
+    email: email,
   });
 
-  if (userVerified) {
+
+  if (isUserVerified && isUserVerified.isVerified) {
     return res.status(401).json({
+      status: 401,
       msg: "User is already verified!",
       _help: "You should check your dashboard now, you're good to go!",
     });
@@ -247,6 +240,7 @@ const verifyEmail = async (req, res) => {
 
   if (!user) {
     return res.status(422).json({
+      status: 422,
       msg: "Try again token expired",
       _help:
         "Try clicking on the verification link immediately it appears in your mailbox!",
@@ -257,14 +251,40 @@ const verifyEmail = async (req, res) => {
     user.verifyToken = "";
     user.vExpireToken = "";
     user.isVerified = true;
-    updatedUser = await user.save();
+
+    // What you specify here is what the payload will look like
+    const token = jwt.sign(
+      {
+        id: user._id,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "3h" }
+    );
+
+
+    const userAPIKey = user.apiKey;
+
+    const access = {
+      token,
+      userAPIKey,
+    };
+
+    await setHttpOnlyCookie(access, res);
+
+    await user.save();
+   
+
+    
+
     res.status(200).json({
-      message: "Account Verified successfully!",
+      status: 200,
+      msg: "Account Verified successfully!",
     });
   } catch (err) {
     res.status(400).json({
-      message: "Failed to verify account",
-      err: err,
+      status: 400,
+      msg: "Failed to verify account",
+      _help: err,
     });
   }
 };
@@ -273,7 +293,6 @@ const verifyEmail = async (req, res) => {
 // @route   POST /api/v1/auth/resend-activation-code
 // @access  Public
 const activationCode = async (req, res) => {
-  const isVerified = true;
   const email = req.body.email;
   const userExist = await UserModel.findOne({
     email,
@@ -327,16 +346,18 @@ const activationCode = async (req, res) => {
       Use this link => https://www.online-toolz.com/tools/date-functions.php
       Reset Token will expire in the next 30 minutes.
     */
-      userExist.vExpireToken = Date.now() + process.env.ACTIVATION_LINK_EXPIRE;
+      userExist.vExpireToken = new Date(
+        Date.now() + Number(process.env.ACTIVATION_LINK_EXPIRE)
+      );
 
       const user = await userExist.save();
 
       if (user) {
         const mail = await sendMail(isVerified, user, transporter);
         if (mail.status === 200) {
-          res.status(400).json({
+          res.status(200).json({
             status: 200,
-            message:
+            msg:
               "Verification Code sent via email. Please, check your mailbox!",
           });
         }
@@ -344,9 +365,25 @@ const activationCode = async (req, res) => {
     });
   } catch (err) {
     res.status(400).json({
-      message: "Oops, activation code could not be sent. Try again...",
+      msg: "Oops, activation code could not be sent. Try again...",
       err: err,
     });
+  }
+};
+
+// @desc    Signs the user out
+// @route   POST /api/v1/auth/logout
+// @access  Public
+const logout = async (req, res) => {
+  try {
+    res.cookie("authToken", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
+    // res.clearCookie('authToken', {domain: "localhost", path: "/"});
+    return res.status(201).json({ message: "Logout succeeded." });
+  } catch (error) {
+    res.status(401).json({ message: error.message });
   }
 };
 
@@ -357,5 +394,6 @@ module.exports = {
   resetPassword,
   verifyEmail,
   activationCode,
-  loggedIn
+  loggedIn,
+  logout,
 };

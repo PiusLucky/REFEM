@@ -39,6 +39,7 @@
     "handlebars": "^4.7.7",
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.3.0",
+    "moment": "^2.29.1",
     "mongoose": "^6.0.13",
     "node-ipinfo": "^3.0.2",
     "nodemailer": "^6.7.1",

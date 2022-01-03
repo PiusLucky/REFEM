@@ -19,30 +19,22 @@ cloudinary.config({
   secure: true,
 });
 
-
 const updateUserWithResume = async (req, fmt, url) => {
   try {
-    const apiKey = req.headers["api-key"];
     //upsert allows mongoose to create a new instance if no resume instance (with initial filter) exists.
     const resumeInstance = await ResumeModel.findOneAndUpdate(
-      { initial: false },
+      { _id: req.user._id },
       { $set: { initial: true, format: fmt, hasCV: true, link: url } },
       //new:::  return modified data (new document), upsert:::  create new model instance if the filter fails.
       { new: true, upsert: true }
     );
 
     const newResumeId = resumeInstance._id;
-    const userUpdate = req.user._id
-      ? await UserModel.findOneAndUpdate(
-          { _id: req.user._id },
-          { $set: { resume: newResumeId } },
-          { new: true }
-        )
-      : await UserModel.findOneAndUpdate(
-          { apiKey },
-          { $set: { resume: newResumeId } },
-          { new: true }
-        );
+    const userUpdate = await UserModel.findOneAndUpdate(
+      { _id: req.user._id },
+      { $set: { resume: newResumeId } },
+      { new: true }
+    );
     return userUpdate;
   } catch (err) {
     console.log(err);
@@ -67,15 +59,9 @@ const saveResumeInstanceAndReturnJSON = () => {
 
     const fileSize = fileData.size;
 
-    const user = req.user._id
-      ? await UserModel.findOne(
-          { _id: req.user._id }
-        )
-      : await UserModel.findOne(
-          { apiKey }
-        );
-      
-    const userId = user._id
+    const user = await UserModel.findOne({ _id: req.user._id });
+
+    const userId = user._id;
 
     const specFilePath = `resume/users/${userId}`;
 
@@ -128,6 +114,32 @@ const saveResumeInstanceAndReturnJSON = () => {
   };
 };
 
+const retrieveResumeLink = () => {
+  return async (req, res) => {
+    const user = req.user;
+    try {
+      if (user.resume) {
+        const resumeObject = await ResumeModel.findOne({ _id: user.resume });
+        return res.status(200).json({
+          status: 200,
+          resume: resumeObject.link,
+        });
+      } else {
+        return res.status(400).json({
+          status: 400,
+          resume: "Please upload a resume!",
+        });
+      }
+    } catch (err) {
+      return res.status(400).json({
+        status: 400,
+        err: err,
+      });
+    }
+  };
+};
+
 module.exports = {
   saveResumeInstanceAndReturnJSON,
+  retrieveResumeLink,
 };

@@ -60,7 +60,7 @@ const updateProfile = () => {
 
 const getProfile = () => {
   return async (req, res) => {
-    let user = req.user;
+    let user = await req.user;
     return res.status(200).json(user);
   };
 };

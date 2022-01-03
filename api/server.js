@@ -2,8 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const UserModelRouter = require("./routes/auth");
-const ProfileRouter = require("./routes/profile");
 const EmailModelRouter = require("./routes/sendMail");
+const ProfileRouter = require("./routes/profile");
 const ResumeModelRouter = require("./routes/uploadResume");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -12,17 +12,18 @@ const cookieParser = require('cookie-parser');
 
 dotenv.config();
 
+
+
 const app = express();
+
+// cookie-parser
+app.use(cookieParser());
 
 // body-parser
 app.use(bodyParser.json());
 
 const corsOptions = {
-    origin: [
-        'http://localhost:3000',
-        'http://127.0.0.1:3000',
-        'http://localhost:3000/dashboard',
-    ],
+    origin: 'http://localhost:3000',
     credentials: true,
 };
 
@@ -31,8 +32,7 @@ app.use((cors(corsOptions)))
 
 
 
-// cookie-parser
-app.use(cookieParser());
+
 
 
 
