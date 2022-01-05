@@ -41,7 +41,7 @@ const MailSchema = new mongoose.Schema(
       default: "Email01",
     },
     resumeSubmissionDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     timeSinceSubmitted: String,

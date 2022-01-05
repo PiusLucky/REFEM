@@ -27,7 +27,7 @@ const MAX_API_CALL = Role.User? process.env.MAX_API_CALL: process.env.MAX_ADMIN_
 
 const generator = (date) => {
     // Since server time lags by 1hr
-    const formattedDate = moment(date.toString()).add(1, 'hours').format('dddd');
+    const formattedDate = moment(date).add(1, 'hours').format('dddd');
     return formattedDate
 }
 
@@ -76,13 +76,12 @@ const updateUserWithUsageStat = async (req) => {
   const userUpdate = await UserModel.findOneAndUpdate({ _id: req.user._id }, { new: true })
 
   const initialDate = userUpdate.usage.date;
+  
   // add 24hours to the initial date of usageStat
-  const initialDate24 = initialDate
-    .setHours(initialDate.getHours() + MAX_API_HOURS)
-    .toString();
+  const initialDate24 = moment(initialDate).add(MAX_API_HOURS, 'hours').valueOf()
+  const currentDate = moment().add(1, "hours").valueOf()
 
-  if (initialDate24 <= Date.now().toString()) {
-    // Checking if it's up to 24 hours since the last usage.count was recorded.
+  if (initialDate24 <= currentDate) {
     await UserModel.findOneAndUpdate(
           { _id: req.user._id },
           { $set: { "usage.count": 0, "usage.date": new Date() } },
@@ -216,17 +215,17 @@ const sendMailInstanceAndReturnJSON = () => {
 
       if (maxApiCall) {
         return res.status(429).json({
-          msg: "Maximum API Calls exceeded!",
+          msg: "Maximum API Calls Reached!",
           _help: `Here at REFEM, we offer ${MAX_API_CALL} API calls for every ${MAX_API_HOURS} hours`,
         });
-      }
-
-      const execEmail = await sendMail(userResume, hybridData, transporter);
-      updateUserWithUsageStat(req);
-      return res.status(execEmail.status).json(execEmail);
+      }else {
+        const execEmail = await sendMail(userResume, hybridData, transporter);
+        updateUserWithUsageStat(req);
+        return res.status(execEmail.status).json(execEmail);
+      }  
     }
     } catch (err) {
-      res.status(400).json({
+      return res.status(400).json({
         msg: "Something went wrong!",
         err: err,
       });

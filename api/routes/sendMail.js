@@ -1,6 +1,6 @@
 const express = require('express')
 const  { sendMailInstanceAndReturnJSON, previewMailAndReturnJSON } = require('../utils/mail')
-const  { sendMail, previewMail, retrieveAllMails } = require('../controllers/sendMail')
+const  { sendMail, previewMail, retrieveAllMails, updateCount } = require('../controllers/sendMail')
 const  authMiddleware = require('../middleware/authMiddleware')
 const  verifyAccountMiddleware = require('../middleware/verifyAccountMiddleware')
 
@@ -8,18 +8,25 @@ const router = express.Router()
 
 // SendMail Route
 // @desc    Send email to recruiters
-// @route   POST /api/v1/mail/send/:userId
+// @route   POST /api/v1/mail/send
 // @access  Private
 router.post('/send', authMiddleware, verifyAccountMiddleware, sendMail, sendMailInstanceAndReturnJSON())
 
 // PreviewMail Route
 // @desc    Preview raw HTML
-// @route   POST /api/v1/mail/preview/:userId
+// @route   POST /api/v1/mail/preview
 // @access  Private
 router.post('/preview', authMiddleware, verifyAccountMiddleware, previewMailAndReturnJSON())
 
-// Get all Mails associated with a particular User.
+// @desc    Get all Mails associated with a particular User.
+// @route   GET /api/v1/mail/retrieve
+// @access  Private
 router.get('/retrieve', authMiddleware, verifyAccountMiddleware, retrieveAllMails())
+
+// @desc    Get all Mails associated with a particular User.
+// @route   GET /api/v1/mail/zero-count
+// @access  Private
+router.get('/zero-count', authMiddleware, verifyAccountMiddleware, updateCount())
 
 module.exports = router
 

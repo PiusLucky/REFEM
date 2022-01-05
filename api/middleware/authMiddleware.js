@@ -10,7 +10,7 @@ const authMiddleware = async (req, res, next) => {
 
   if (!token && !apiKey) {
     return res.status(401).json({
-      msg: "Authentication headers empty!",
+      msg: "Login Cookie expired, kindly log in again. Thanks",
       _help:
         "Please include either the token access or the apiKey in the header of your request",
     });

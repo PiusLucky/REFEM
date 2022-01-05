@@ -44,7 +44,6 @@ const updateUserWithResume = async (req, fmt, url) => {
 const saveResumeInstanceAndReturnJSON = () => {
   return async (req, res) => {
     const file = await req.files;
-
     if (!file) {
       return res.status(400).json({
         msg: "File Empty",
@@ -80,11 +79,7 @@ const saveResumeInstanceAndReturnJSON = () => {
             updateUserWithResume(req, format, url);
 
             return res.status(201).json({
-              width,
-              height,
-              format,
-              bytes: cleanBytes(bytes),
-              url,
+               msg: `Uploaded ${cleanBytes(bytes)} of "${format}" file Successfully!`
             });
           } else {
             return res.status(500).json({
@@ -122,7 +117,7 @@ const retrieveResumeLink = () => {
         const resumeObject = await ResumeModel.findOne({ _id: user.resume });
         return res.status(200).json({
           status: 200,
-          resume: resumeObject.link,
+          resume: resumeObject,
         });
       } else {
         return res.status(400).json({

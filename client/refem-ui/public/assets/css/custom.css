@@ -67,3 +67,17 @@
   justify-content: center;
   align-items: center;
 }
+
+.nav-link:hover {
+  cursor: pointer;
+}
+
+.no-pointer:hover {
+  cursor: default;
+}
+
+.flex-me {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -12,17 +12,31 @@ const retrieveAllMails = () => {
     const user = await UserModel.findOne(
       { _id: req.user._id },
       "username mails"
-    ).populate({ path: "mails", model: UserModel });
+    )
+      .select("-_id")
+      .populate({ path: "mails", model: MailModel });
+
     if (user) {
-      res.status(200).json(user);
+      return res.status(200).json(user);
     }
-    res.status(400).json({
+    return res.status(400).json({
       msg: "Something went wrong...",
     });
+  };
+};
+
+const updateCount = () => {
+  return async (req, res) => {
+    await UserModel.findOneAndUpdate(
+      { _id: req.user._id },
+      { $set: { "usage.count": 0, "usage.date": new Date() } },
+      { new: true }
+    );
   };
 };
 
 module.exports = {
   sendMail,
   retrieveAllMails,
+  updateCount,
 };
