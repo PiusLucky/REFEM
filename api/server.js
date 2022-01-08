@@ -10,6 +10,7 @@ const cors = require("cors");
 const fileupload = require("express-fileupload");
 const cookieParser = require('cookie-parser');
 
+
 dotenv.config();
 
 
@@ -32,10 +33,6 @@ app.use((cors(corsOptions)))
 
 
 
-
-
-
-
 // express fileupload
 app.use(
     fileupload({
@@ -54,12 +51,6 @@ db.once("open", function () {
     console.log("Database Connected Successfully!");
 });
 
-// /Make Resume upload Mandatory
-// What is difference between resume and CV?
-// A resume is a one page summary of your work experience and background relevant to the job you are applying to. 
-// A CV is a longer academic diary that includes all your experience, certificates, and publications.
-
-// verify email https://mjml.io/try-it-live/Bzg8rGs9KLK
 
 app.set("view engine", "ejs");
 
@@ -67,6 +58,16 @@ app.use("/api/v1/auth", UserModelRouter);
 app.use("/api/v1/profile", ProfileRouter);
 app.use("/api/v1/mail", EmailModelRouter);
 app.use("/api/v1/resume-upload", ResumeModelRouter);
+
+
+if(process.env.NODE_ENV=='production'){
+    const path = require('path')
+    app.get('/',(req,res)=>{
+        app.use(express.static(path.resolve(__dirname, 'client', 'refem-ui', 'build')))
+        res.sendFile(path.resolve(__dirname,'client', 'refem-ui', 'build','index.html'))
+    })
+}
+
 
 
 app.listen(5000);

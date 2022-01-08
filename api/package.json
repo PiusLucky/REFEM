@@ -4,7 +4,7 @@
   "description": "A resume email followup manager\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[C\u001b[C\u001b[CREFEM => short for resume-followup-email-manager is an app that allows you to send potential employers ()\u001b[Dmaybe the recruiters) emails \u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D a followup email just to remind them that you care about them and really looking forward to working with them. It's gonna be huge.",
   "main": "server.js",
   "scripts": {
-    "refem-backend": "node server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
