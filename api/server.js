@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 const corsOptions = {
-    // origin: process.env.NODE_ENV === 'production'?"https://refem.vercel.app":'http://localhost:3000',
+    // 'http://localhost:3000',
     origin: "https://refem.vercel.app",
     credentials: true,
 };
