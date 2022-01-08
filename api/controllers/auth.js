@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const UserModel = require("../models/User");
+const { updateCount } = require("./sendMail");
 const bcrypt = require("bcrypt");
 const { sendMail, createCookieCumStatus, setHttpOnlyCookie } = require("../utils/auth");
 const { validateEmail, strengthChecker } = require("../utils/logic");
@@ -7,6 +8,9 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const dotenv = require("dotenv");
+const moment = require("moment");
+
+
 
 dotenv.config();
 
@@ -15,6 +19,7 @@ const USER = process.env.GMAIL_APP_USER;
 const PASS = process.env.GMAIL_APP_PASSWORD;
 const HOST = process.env.GMAIL_HOST;
 const PORT = process.env.GMAIL_PORT;
+const MAX_API_HOURS = process.env.MAX_API_HOURS;
 
 // @desc    Register a new user
 // @route   POST /api/v1/auth/register
@@ -97,6 +102,19 @@ const loggedIn = () => {
   return async (req, res) => {
     try {
       const user = await req.user;
+      if(user) {
+        const initialDate = user?.usage?.date;
+        const initialDate24 = moment(initialDate).add(
+          MAX_API_HOURS,
+          "hours"
+        ).valueOf();
+        const currentDate = moment().add(1, "hours").valueOf()
+        if (
+          initialDate24 <= currentDate
+        ) {
+          await updateCount(user)
+        }
+      }
       return res.status(200).json({
         status: 200,
         info: user,
@@ -151,20 +169,17 @@ const forgotPassword = async (req, res) => {
 
     if (!specific_user) {
       return res.status(422).json({
-        error: `User with email "${email}" does not exist in our database`,
+        msg: `User with email "${email}" does not exist in our database`,
       });
     }
 
     specific_user.resetToken = token;
 
-    specific_user.expireToken = Date.now() + process.env.PASSWORD_LINK_EXPIRE;
+    specific_user.expireToken = Date.now() + parseInt(process.env.PASSWORD_LINK_EXPIRE);
 
     const sendEmail = await sendMail(isVerify, specific_user, transporter);
 
-    if (sendEmail.status) {
-      return res.json({ message: sendEmail.message });
-    }
-    return res.json({ message: sendEmail.message });
+    return res.status(sendEmail.status).json({ status: sendEmail.status, msg: sendEmail.msg });
   });
 };
 
@@ -174,18 +189,20 @@ const forgotPassword = async (req, res) => {
 const resetPassword = async (req, res) => {
   const query = req.query;
   const sentToken = query.token;
+  const email = query.email;
   const password = req.body.password;
 
   const { status } = strengthChecker(password);
   if (status === "strong" || status === "medium") {
     const user = await UserModel.findOne({
+      email: email,
       resetToken: sentToken,
       // Check if the expireToken(in time) in database is greater than the current time.
       expireToken: { $gt: Date.now() },
     });
 
     if (!user) {
-      return res.status(422).json({ error: "Try again session expired" });
+      return res.status(422).json({ status: 422, msg: "Try again session expired" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -197,17 +214,20 @@ const resetPassword = async (req, res) => {
       user.expireToken = "";
       updatedUser = await user.save();
       res.status(200).json({
-        message: "Password Updated successfully!",
+        status: 200,
+        msg: "Password Updated successfully! Redirecting now...",
       });
     } catch (err) {
       res.status(400).json({
-        message: "Failed to update password",
+        status: 400,
+        msg: "Failed to update password",
         err: err,
       });
     }
   } else {
     res.status(400).json({
-      message: "Your Password is too weak, try adding symbols!",
+      status: 400,
+      msg: "Your Password is too weak, try adding symbols!",
     });
   }
 };

@@ -234,6 +234,7 @@ const sendMailInstanceAndReturnJSON = () => {
 };
 
 const previewMailAndReturnJSON = () => {
+  const FRONT_END_LINK = process.env.FRONTEND_LINK
   return async (req, res) => {
     const {
       subjectLine,
@@ -278,16 +279,21 @@ const previewMailAndReturnJSON = () => {
           ...(userResume.resume && {
             attachment: {
               name: `Resume.${userResume.resume.format}`,
-              link: userResume.resume.link,
+              link: userResume.resume.link || FRONT_END_LINK,
             },
           }),
         };
+
+        const links = {
+          frontend: FRONT_END_LINK 
+        }
 
 
 
         const hybridData = {
           email: emailData,
           sender: senderData,
+          link: links
         };
 
         

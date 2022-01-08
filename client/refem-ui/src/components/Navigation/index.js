@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom"
 /* eslint-disable react/prop-types */
 
-const Navigation = ({mailComp, resumeTracking, resumeUploadComp, mailTracking, activateSendMail, activateResumeTracking, activateResumeUpload, activateMailTracking, logout }) => {
+const Navigation = ({mailComp, resumeTracking, resumeUploadComp, mailTracking, activateSendMail, activateResumeTracking, activateResumeUpload, activateMailTracking }) => {
   return (
     <nav className="navbar navbar-vertical navbar-expand-lg navbar-light">
       <a className="navbar-brand mx-auto d-none d-lg-block my-0 my-lg-4">
@@ -147,6 +148,7 @@ const Navigation = ({mailComp, resumeTracking, resumeUploadComp, mailTracking, a
           </li>
         </ul>
         <div className="mt-3 mt-md-auto mb-3 signout d-grid">
+          <Link to="/documentation" target="_blank">
           <button className="btn btn-dark btn-lg">
             <svg
               data-name="Icons/Tabler/Paperclip"
@@ -170,113 +172,7 @@ const Navigation = ({mailComp, resumeTracking, resumeUploadComp, mailTracking, a
             <span className="ms-2">Docs </span>&nbsp;
             <span className="docs-version">v1.0</span>
           </button>
-        </div>
-        <div className="navbar-vertical-footer border-top border-gray-50">
-          <ul className="navbar-vertical-footer-list">
-            <li>
-              <a>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18.047"
-                  height="18.047"
-                  viewBox="0 0 18.047 18.047"
-                >
-                  <g
-                    data-name="Icons/Tabler/Paperclip Copy"
-                    transform="translate(0.047 0.047)"
-                  >
-                    <rect
-                      data-name="Icons/Tabler/Adjustments background"
-                      width="18"
-                      height="18"
-                      fill="none"
-                    />
-                    <path
-                      d="M14.4,17.3l0-.074V6.579a2.829,2.829,0,0,1,0-5.443V.772A.772.772,0,0,1,15.94.7l0,.074v.364a2.829,2.829,0,0,1,0,5.443v10.65A.771.771,0,0,1,14.4,17.3ZM13.885,3.858a1.285,1.285,0,1,0,1.286-1.286A1.287,1.287,0,0,0,13.885,3.858ZM8.232,17.3l0-.074V15.836a2.829,2.829,0,0,1,0-5.443V.772A.771.771,0,0,1,9.768.7l0,.074v9.621a2.829,2.829,0,0,1,0,5.443v1.393a.772.772,0,0,1-1.54.074Zm-.517-4.188A1.285,1.285,0,1,0,9,11.829,1.287,1.287,0,0,0,7.714,13.115ZM2.06,17.3l0-.074V9.664a2.829,2.829,0,0,1,0-5.443V.772A.771.771,0,0,1,3.6.7l0,.074V4.221a2.829,2.829,0,0,1,0,5.443v7.565a.772.772,0,0,1-1.54.074ZM1.543,6.943A1.285,1.285,0,1,0,2.829,5.657,1.287,1.287,0,0,0,1.543,6.943Z"
-                      transform="translate(-0.047 -0.047)"
-                      fill="#6c757d"
-                    />
-                  </g>
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a onClick={(e) => logout(e)}>
-                <svg
-                  aria-hidden="true"
-                  role="img"
-                  width="23"
-                  height="23"
-                  preserveAspectRatio="xMidYMid meet"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M4 12a.5.5 0 0 0 .5.5h8.793l-2.647 2.646a.5.5 0 1 0 .707.708l3.5-3.5a.5.5 0 0 0 0-.707l-3.5-3.5a.5.5 0 0 0-.707.707l2.647 2.646H4.5a.5.5 0 0 0-.5.5zM17.5 2h-11A2.502 2.502 0 0 0 4 4.5v4a.5.5 0 0 0 1 0v-4C5 3.672 5.672 3 6.5 3h11c.828 0 1.5.672 1.5 1.5v15c0 .828-.672 1.5-1.5 1.5h-11c-.828 0-1.5-.672-1.5-1.5v-4a.5.5 0 0 0-1 0v4A2.502 2.502 0 0 0 6.5 22h11a2.502 2.502 0 0 0 2.5-2.5v-15A2.502 2.502 0 0 0 17.5 2z"
-                    fill="#6c757d"
-                  />
-                </svg>
-              </a>
-            </li>
-            <li className="dropup">
-              <a
-                role="button"
-                id="dropdownMenuLink"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <img
-                  src="https://fabrx.co/preview/muse-dashboard/assets/svg/icons/united-states.svg"
-                  alt="United States"
-                  className="avatar avatar-xss avatar-circle"
-                />
-              </a>
-              <ul
-                className="dropdown-menu dropdown-menu-end"
-                id="dropdown-menu"
-                aria-labelledby="dropdownMenuLink"
-              >
-                <li className="dropdown-sub-title">
-                  <span>Language</span>
-                </li>
-                <li>
-                  <a className="dropdown-item">
-                    <img
-                      className="avatar avatar-xss avatar-circle me-2"
-                      src="https://fabrx.co/preview/muse-dashboard/assets/svg/icons/united-states.svg"
-                      alt="Flag"
-                    />
-                    <span className="text-truncate" title="English">
-                      English
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item">
-                    <img
-                      className="avatar avatar-xss avatar-circle me-2"
-                      src="https://fabrx.co/preview/muse-dashboard/assets/svg/icons/dutch.svg"
-                      alt="Flag"
-                    />
-                    <span className="text-truncate" title="English">
-                      Dutch
-                    </span>
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item">
-                    <img
-                      className="avatar avatar-xss avatar-circle me-2"
-                      src="https://fabrx.co/preview/muse-dashboard/assets/svg/icons/latin.svg"
-                      alt="Flag"
-                    />
-                    <span className="text-truncate" title="Latin">
-                      Latin
-                    </span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
+          </Link>
         </div>
       </div>
     </nav>

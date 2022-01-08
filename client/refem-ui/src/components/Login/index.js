@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.css";
 import "./login.module.css";
 
@@ -87,8 +87,7 @@ const Login = () => {
         <div className="simple-login-form rounded-12 shadow-dark-80 bg-white">
           <h2 className="mb-3">Sign in</h2>
           <div className="pt-sm-1 pt-md-2 pb-2">
-            <a
-              href="/"
+            <span
               className="text-gray-700 font-weight-semibold border rounded px-sm-4 py-2 d-flex align-items-center justify-content-center bg-white"
             >
               <svg
@@ -104,7 +103,7 @@ const Login = () => {
               <span className="ps-2 py-1 my-1 lh-sm">
                 Avoid sharing login details
               </span>
-            </a>
+            </span>
           </div>
           <div className="position-relative">
             <hr className="bg-gray-200 border-gray-200 opacity-100" />
@@ -163,29 +162,16 @@ const Login = () => {
               </button>
             </div>
             <div className="my-3 my-sm-4 d-flex">
-              <div className="form-check form-check-sm mb-0">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="gridCheck"
-                />
-                <label
-                  className="form-check-label small text-gray-600"
-                  htmlFor="gridCheck"
-                >
-                  Remember me
-                </label>
-              </div>
-              <a href="/" className="small text-gray-600 ms-auto mt-1">
+              <Link to="/forgot-password" className="small text-gray-600 ms-auto mt-1">
                 Forgot password?
-              </a>
+              </Link>
             </div>
             <div className="border-top border-gray-200 pt-3 pt-sm-4 text-center">
               <span className="text-gray-700">
                 Don&apos;t have an account?{" "}
-                <a href="/" className="link-primary">
+                <Link to="/register" className="link-primary">
                   Sign up
-                </a>
+                </Link>
               </span>
             </div>
           </form>

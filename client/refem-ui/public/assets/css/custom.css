@@ -81,3 +81,16 @@
   justify-content: center;
   align-items: center;
 }
+
+.flex-now {
+  display: flex;
+  justify-content: space-around;
+}
+
+.fullscreen-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+

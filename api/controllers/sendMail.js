@@ -25,14 +25,12 @@ const retrieveAllMails = () => {
   };
 };
 
-const updateCount = () => {
-  return async (req, res) => {
+const updateCount = async (user) => {
     await UserModel.findOneAndUpdate(
-      { _id: req.user._id },
+      { _id: user._id },
       { $set: { "usage.count": 0, "usage.date": new Date() } },
       { new: true }
     );
-  };
 };
 
 module.exports = {

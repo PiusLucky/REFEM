@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import AuthContext from "../../context/AuthContext";
-import { DASHBOARD, LOGIN } from "../../constants/routes";
+import { DASHBOARD } from "../../constants/routes";
 import SVGCustomLoader from "../SVGCustomLoader";
 
 
@@ -10,23 +9,8 @@ const EmailVerify = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const { setLoggedIn } = useContext(AuthContext);
   const BASE_URL = process.env.REACT_APP_API;
-
-
-  const logout = async (e) => {
-    try {
-      e.preventDefault();
-      await axios.get(`${BASE_URL}/api/v1/auth/logout`);
-      await setLoggedIn(null);
-      window.location.href = LOGIN
-    } catch (err) {
-      return err
-    }
-  };
-
   const [searchParams] = useSearchParams();
-
   const token = searchParams.get("token")
   const email = searchParams.get("email")
 
@@ -95,10 +79,7 @@ const EmailVerify = () => {
             </div>
             <div className="mt-3 mt-sm-4 border-top border-gray-200 pt-3">
               <p className="text-gray-700 mb-0">
-                Feel something ain&apos;t right?{" "}
-                <a href="#0"  onClick={ (e) => logout(e)} className="link-primary">
-                  Logout
-                </a>
+                #WiseWords - Patience is the mother of all virtues.
               </p>
             </div>
           </form>
@@ -106,9 +87,7 @@ const EmailVerify = () => {
         <div className="text-center py-4">
           <span className="text-gray-600 small">
             If you’re having any trouble verifying your mail, contact the{" "}
-            <a href="#" className="text-gray-600">
-              <u>developer</u>
-            </a>
+            luckypius50@gmail.com
           </span>
         </div>
       </div>

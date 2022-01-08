@@ -60,7 +60,7 @@ const saveUserInstanceAndReturnJSON = () => {
   return async (req, res) => {
     const ipData = await getIpInfo();
 
-    if (!ipData.hasOwnProperty("ip")) {
+    if (!ipData?.hasOwnProperty("ip")) {
       return res.status(500).json({
         msg: "Ip-information retriever failed!",
         _help:
@@ -221,6 +221,7 @@ const saveUserInstanceAndReturnJSON = () => {
             const mail = await sendMail(isVerified, user, transporter);
             if (mail.status === 200) {
               res.status(201).json({
+                status: 201,
                 msg: `Verification link sent successfully!`,
               });
             }
@@ -242,7 +243,7 @@ const saveUserInstanceAndReturnJSON = () => {
 };
 
 const sendMail = async (isVerify, user, mailSender) => {
-  try {
+  // try {
     const FRONTEND_LINK = process.env.FRONTEND_LINK;
     const readFile = promisify(fs.readFile);
 
@@ -276,18 +277,18 @@ const sendMail = async (isVerify, user, mailSender) => {
     mailSender.sendMail(mailOptions);
     return {
       status: 200,
-      message:
+      msg:
         "Email Sent succesfully, check your mail inbox (or spam folder).",
       sent: true,
     };
-  } catch (err) {
-    return {
-      status: 400,
-      message: "Something went wrong. Try again.",
-      sent: false,
-      err: err,
-    };
-  }
+  // } catch (err) {
+  //   return {
+  //     status: 400,
+  //     msg: "Something went wrong. Try again.",
+  //     sent: false,
+  //     err: err,
+  //   };
+  // }
 };
 
 const setHttpOnlyCookie = async(access, res) => {

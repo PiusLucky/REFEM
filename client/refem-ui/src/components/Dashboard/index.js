@@ -1,7 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-// import Chart from 'react-apexcharts'
-// import ApexCharts from 'apexcharts'
-
 import AuthContext from "../../context/AuthContext";
 import { LOGIN } from "../../constants/routes";
 import { shortenString } from "../../utils/stringShortener";
@@ -26,7 +23,6 @@ import ResumeUploadHeader from "../Resume/UploadHeader";
 import MailTracking from "../SendMail/MailTracking";
 import MailTrackingHeader from "../SendMail/MailTrackingHeader";
 
-// import ResumeComp from "../Resume"
 
 const Dashboard = () => {
   // apex const declarations
@@ -179,6 +175,8 @@ const Dashboard = () => {
   const [mailTracking, setMailTracking] = useState(false);
   // Update Resume Link on Upload
   const [newResumeUploaded, setNewResumeUploaded] = useState(null);
+  // Update Emails Link on Send
+  const [newEmailSent, setNewEmailSent] = useState(null);
   
 
   const [loading, setLoading] = useState(false);
@@ -289,7 +287,7 @@ const Dashboard = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [newEmailSent]);
 
 
   useEffect(() => {
@@ -540,13 +538,13 @@ const Dashboard = () => {
         triggerRender={triggerRender}
         setTriggerRender={setTriggerRender}
         hasResume={hasResume}
+        setNewEmailSent={setNewEmailSent}
       />
       <Navigation
         activateSendMail={activateSendMail}
         activateResumeTracking={activateResumeTracking}
         activateMailTracking={activateMailTracking}
         activateResumeUpload={activateResumeUpload}
-        logout={logout}
         mailComp={mailComp}
         resumeTracking={resumeTracking}
         resumeUploadComp={resumeUploadComp}

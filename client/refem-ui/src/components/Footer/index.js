@@ -35,13 +35,7 @@ const FooterComp = () => {
             <div className="col-md-6">
               <ul className="nav navbar">
                 <li>
-                  <a>About</a>
-                </li>
-                <li>
-                  <a>Support</a>
-                </li>
-                <li>
-                  <a>Contact</a>
+                  <a href="/documentation">Documentation</a>
                 </li>
               </ul>
             </div>

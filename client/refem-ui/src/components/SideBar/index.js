@@ -3,7 +3,7 @@ import SVGCustomLoader from "../SVGCustomLoader";
 import axios from "axios";
 /* eslint-disable react/prop-types */
 
-const SideBarComp = ({sendMailData, loading, notify, previewHtml, setPreviewHtml, successCompile, setTriggerRender, hasResume}) => {
+const SideBarComp = ({setNewEmailSent, sendMailData, loading, notify, previewHtml, setPreviewHtml, successCompile, setTriggerRender, hasResume}) => {
   // apex const declarations
   const BASE_URL = process.env.REACT_APP_API;
 
@@ -18,13 +18,13 @@ const SideBarComp = ({sendMailData, loading, notify, previewHtml, setPreviewHtml
           }
         );
         setPreviewHtml(null);
-        // setNewEmailSent(true)
-        setTriggerRender(Math.random());
+        setNewEmailSent(Math.random());
         document.body.classList.remove("customize-box");
         document
           .querySelector(".simplebar-content-wrapper")
           .classList.remove("only-on-load");
         notify(data.msg);
+        setTriggerRender(Math.random());
       } catch (error) {
         // setNewEmailSent(false)
         notify(error.response?.data?.msg);
@@ -79,7 +79,7 @@ const SideBarComp = ({sendMailData, loading, notify, previewHtml, setPreviewHtml
               {successCompile
                 ? hasResume
                   ? "Before submitting, make sure all details are correct."
-                  : "NB: You cannot proceed without Resume."
+                  : "NB: You cannot proceed without a Resume."
                 : ""}
             </p>
           </div>
