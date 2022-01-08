@@ -243,7 +243,7 @@ const saveUserInstanceAndReturnJSON = () => {
 };
 
 const sendMail = async (isVerify, user, mailSender) => {
-  // try {
+  try {
     const FRONTEND_LINK = process.env.FRONTEND_LINK;
     const readFile = promisify(fs.readFile);
 
@@ -281,14 +281,14 @@ const sendMail = async (isVerify, user, mailSender) => {
         "Email Sent succesfully, check your mail inbox (or spam folder).",
       sent: true,
     };
-  // } catch (err) {
-  //   return {
-  //     status: 400,
-  //     msg: "Something went wrong. Try again.",
-  //     sent: false,
-  //     err: err,
-  //   };
-  // }
+  } catch (err) {
+    return {
+      status: 400,
+      msg: "Something went wrong. Try again.",
+      sent: false,
+      err: err,
+    };
+  }
 };
 
 const setHttpOnlyCookie = async(access, res) => {
