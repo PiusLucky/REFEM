@@ -55,23 +55,16 @@ db.once("open", function () {
 
 app.set("view engine", "ejs");
 
+app.get('/',(req,res)=>{
+   res.status(200).json({msg:"API Connected!"})
+})
 app.use("/api/v1/auth", UserModelRouter);
 app.use("/api/v1/profile", ProfileRouter);
 app.use("/api/v1/mail", EmailModelRouter);
 app.use("/api/v1/resume-upload", ResumeModelRouter);
 
 
-// if(process.env.NODE_ENV === 'production'){
-//     const path = require('path')
-//     app.get('/',(req,res)=>{
-//         app.use(express.static(path.resolve(__dirname, 'client', 'refem-ui', 'build')))
-//         res.sendFile(path.resolve(__dirname,'client', 'refem-ui', 'build','index.html'))
-//     })
-// }
-
-
-
-app.listen(5000);
+app.listen(process.env.NODE_ENV === "production"? process.env.PORT: 5000);
 
 
 module.exports = app

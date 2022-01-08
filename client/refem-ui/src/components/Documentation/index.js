@@ -207,11 +207,11 @@ else {
     <div className="muze-documentation">
       <header className="doc-header bg-white px-3 px-md-4 shadow-sm position-fixed">
         <nav className="navbar navbar-expand-lg has-header-inner py-0">
-          <a className="navbar-brand" href="index.html">
+          <a className="navbar-brand" href="/dashboard">
             <img src="../assets/svg/logo-dashboard.svg" alt="Refem" />
           </a>
           <div className="text-end d-block d-xl-none order-md-2 ms-auto">
-            <a className="aside-toggle" onClick={(e) => enableSideBar(e)}>
+            <a className="aside-toggle" onClick={(e) => enableSideBar(e)} role="button">
               <img
                 src="https://fabrx.co/preview/muse-dashboard/assets/svg/icons/hamburger@20.svg"
                 className="menu-icon"
@@ -228,7 +228,7 @@ else {
             <li className="nav-item">
               <a
                 className="nav-link d-flex align-items-center px-2 px-sm-3 active"
-                href="index.html"
+                href="/documentation"
               >
                 <span className="d-none d-sm-block">Documentation</span>
                 <span className="d-sm-none">Docs</span>

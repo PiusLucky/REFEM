@@ -1,13 +1,6 @@
-/* eslint-disable no-useless-catch */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-setter-return */
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-// import ScrollReveal from "../../utils/scrollReveal.js";
 import { Helmet } from 'react-helmet';
-import logo from "../../logo.svg"
-
-
+import logo from "../../logo.svg";
 
 
 const LandingPage = () => {

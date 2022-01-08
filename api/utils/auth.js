@@ -269,7 +269,7 @@ const sendMail = async (isVerify, user, mailSender) => {
     };
     let htmlToSend = template(data);
     const mailOptions = {
-      from: "APPLICANT - JOB POSTING <refem.applicants@gmail.com>",
+      from: !isVerify?"APPLICANT - JOB POSTING <refem.applicants@gmail.com>":"REFEM NIGERIA <refem.applicants@gmail.com>",
       to: savedUser.email,
       subject: !isVerify ? "Password Reset Request" : "Verify Email",
       html: htmlToSend,
@@ -293,12 +293,15 @@ const sendMail = async (isVerify, user, mailSender) => {
 
 const setHttpOnlyCookie = async(access, res) => {
   const ENVIRONMENT = process.env.NODE_ENV;
+  const prod = ENVIRONMENT !== "development"
   const options = {
     httpOnly: true,
-    sameSite: "None",
     // expires in the next 3hours
     expires: new Date(Date.now() + 10800000),
-    secure: ENVIRONMENT !== "development",
+    secure: prod,
+    ...(prod && {
+      sameSite: "None",
+    }),
   };
 
   res.cookie("authToken", access.token, options);

@@ -14,7 +14,6 @@ const SendMailComp = ({
   handleRoleChange,
   formInputsValid,
   setLoading,
-  loading,
   sendMailData,
   setSendMailData,
   setPreviewHtml,
@@ -37,9 +36,6 @@ const SendMailComp = ({
     setLoading(true);
 
     document.body.classList.toggle("customize-box");
-    document
-      .querySelector(".simplebar-content-wrapper")
-      .classList.add("only-on-load");
 
     try {
       const { data } = await axios.post(
@@ -54,11 +50,11 @@ const SendMailComp = ({
       setSuccessCompile(true);
       setLoading(false);
       notify(data.msg);
-      if (!loading) {
-        document
-          .querySelector(".simplebar-content-wrapper")
-          .classList.remove("only-on-load");
-      }
+      // if (!loading) {
+      //   document
+      //     .querySelector(".simplebar-content-wrapper")
+      //     .classList.remove("only-on-load");
+      // }
     } catch (error) {
       setLoading(false);
       setSuccessCompile(false);

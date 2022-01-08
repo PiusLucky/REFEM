@@ -21,7 +21,7 @@ const SideBarComp = ({setNewEmailSent, sendMailData, loading, notify, previewHtm
         setNewEmailSent(Math.random());
         document.body.classList.remove("customize-box");
         document
-          .querySelector(".simplebar-content-wrapper")
+          .querySelector(".customize-body")
           .classList.remove("only-on-load");
         notify(data.msg);
         setTriggerRender(Math.random());
@@ -84,9 +84,9 @@ const SideBarComp = ({setNewEmailSent, sendMailData, loading, notify, previewHtm
             </p>
           </div>
         </div>
-        <div className="customize-body" data-simplebar>
+        <div className={`customize-body ${loading?"display-flex":""}`}>
           {!loading ? (
-            <div dangerouslySetInnerHTML={{ __html: previewHtml }} />
+              <div style={{maxHeight:"100vh"}} dangerouslySetInnerHTML={{ __html: previewHtml }} />
           ) : (
             <div>
               <SVGCustomLoader />
