@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 
 const corsOptions = {
     // 'http://localhost:3000',
-    origin: "https://refem.vercel.app",
+    origin: process.env.FRONTEND_LINK,
     credentials: true,
 };
 
