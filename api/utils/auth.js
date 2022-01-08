@@ -295,6 +295,7 @@ const setHttpOnlyCookie = async(access, res) => {
   const ENVIRONMENT = process.env.NODE_ENV;
   const options = {
     httpOnly: true,
+    sameSite: "None",
     // expires in the next 3hours
     expires: new Date(Date.now() + 10800000),
     secure: ENVIRONMENT !== "development",
