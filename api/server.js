@@ -24,7 +24,8 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 const corsOptions = {
-    origin: process.env.NODE_ENV=='production'?"https://refem.vercel.app":'http://localhost:3000',
+    // origin: process.env.NODE_ENV === 'production'?"https://refem.vercel.app":'http://localhost:3000',
+    origin: "https://refem.vercel.app",
     credentials: true,
 };
 
@@ -60,7 +61,7 @@ app.use("/api/v1/mail", EmailModelRouter);
 app.use("/api/v1/resume-upload", ResumeModelRouter);
 
 
-if(process.env.NODE_ENV=='production'){
+if(process.env.NODE_ENV === 'production'){
     const path = require('path')
     app.get('/',(req,res)=>{
         app.use(express.static(path.resolve(__dirname, 'client', 'refem-ui', 'build')))
