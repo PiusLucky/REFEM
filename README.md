@@ -1,5 +1,10 @@
 ![Logo](https://user-images.githubusercontent.com/32282934/148679332-e9069c6f-8092-46ba-a18c-f1e6f8db853a.png)
 
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/PiusLucky/REFEM/blob/main/LICENSE)
+
+
+## Go Live
+[![Live](https://refem.vercel.app)
 
 ## :checkered_flag: Get Your Resume to Your Employer
 *REFEM, short for résumé-followup-email-manager is an app that allows you to send potential employers (maybe the recruiters) a followup email just to remind them that you are still interested in the Job in Question.
@@ -159,6 +164,8 @@ This endpoint registers a firstime user.
   "repeatPassword": "<PASSWORD>"
 }
 ```
+
+
 
 
 ### Check Documentation for More
