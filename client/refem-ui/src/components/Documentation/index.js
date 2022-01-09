@@ -97,8 +97,8 @@ const CONTACT_BODY = `{
   "github": "https://github.com/PiusLucky"
 }`
 
-const DEMO = `var axios = require('axios');
-var data = JSON.stringify({
+const DEMO = `const axios = require('axios');
+const data = JSON.stringify({
   "subjectLine": "React.js (Node.js) TypeScript FE/FS Engineer",
   "recruiterName": "Santana Nielsen",
   "recruiterEmail": "um1d@aevtpet.com",
@@ -108,7 +108,7 @@ var data = JSON.stringify({
   "templateType": "Email01"
 });
 
-var config = {
+const config = {
   method: 'post',
   url: '${BASE_URL}/api/v1/mail/send',
   headers: { 
@@ -151,12 +151,12 @@ response = requests.request("POST", url, headers=headers, data=payload)
 print(response.text)
 `
 
-const DEMOCSHARP = `var client = new RestClient("${BASE_URL}/api/v1/mail/send");
+const DEMOCSHARP = `const client = new RestClient("${BASE_URL}/api/v1/mail/send");
 client.Timeout = -1;
-var request = new RestRequest(Method.POST);
+const request = new RestRequest(Method.POST);
 request.AddHeader("api-key", "REFEM-138559cf76da146cb19c03e9-a931601ba4a15317c99d0cc531ab0f0cd3");
 request.AddHeader("Content-Type", "application/json");
-var body = @"{
+const body = @"{
 " + "\n" +
 @"  ""subjectLine"": ""React.js (Node.js) TypeScript FE/FS Engineer"",
 " + "\n" +
@@ -177,11 +177,11 @@ request.AddParameter("application/json", body,  ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 Console.WriteLine(response.Content);`
 
-const DEMODART = `var headers = {
+const DEMODART = `const headers = {
   'api-key': 'REFEM-138559cf76da146cb19c03e9-a931601ba4a15317c99d0cc531ab0f0cd3',
   'Content-Type': 'application/json'
 };
-var request = http.Request('POST', Uri.parse('${BASE_URL}/api/v1/mail/send'));
+const request = http.Request('POST', Uri.parse('${BASE_URL}/api/v1/mail/send'));
 request.body = json.encode({
   "subjectLine": "React.js (Node.js) TypeScript FE/FS Engineer",
   "recruiterName": "Santana Nielsen",
@@ -574,7 +574,7 @@ else {
                   <h2 id="demoPython" className="muzedocs-heading">
                     DEMO (Python)
                   </h2>
-                  <p>A demo code on how to send email using <span className="text-success">request</span>library with Python.</p>
+                  <p>A demo code on how to send email using <span className="text-success">request</span> library in Python.</p>
                   <br />
                   <div className="code-toolbar">
                     <pre className="rounded language-js">
@@ -600,7 +600,7 @@ else {
                 <h2 id="demoCSharp" className="muzedocs-heading">
                   DEMO (C#)
                 </h2>
-                <p>A demo code on how to send email using <span className="text-success">RestSharp</span> with C#.</p>
+                <p>A demo code on how to send email using <span className="text-success">RestSharp</span> in C#.</p>
                 <br />
                 <div className="code-toolbar">
                   <pre className="rounded language-js">
@@ -625,7 +625,7 @@ else {
                   <h2 id="demoDart" className="muzedocs-heading">
                     DEMO (Dart)
                   </h2>
-                  <p>A demo code on how to send email using <span className="text-success">http</span> with Dart.</p>
+                  <p>A demo code on how to send email using <span className="text-success">http</span> in Dart.</p>
                   <br />
                   <div className="code-toolbar">
                     <pre className="rounded language-js">
@@ -870,7 +870,7 @@ else {
 
 
                 <br id="logout" />
-                <h4 className="mt-4rem">Get User Info <span className="text-warning">GET</span></h4>
+                <h4 className="mt-4rem">Log Out <span className="text-warning">GET</span></h4>
                 <p>This endpoint destroys the active httpOnly cookie and logs out the user.</p>
                 <h6>Endpoint</h6>
                 <div className="code-toolbar">
