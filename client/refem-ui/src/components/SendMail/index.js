@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useRef} from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { addDays, subMonths } from "date-fns";
@@ -61,17 +61,23 @@ const SendMailComp = ({
     }
   };
 
+  const checkBox = useRef(null)
+
   //useEffect
   useEffect(() => {
     let mounted = true;
+    
     if (mounted) {
        setMailComp(true)
+       if(checkBox?.current) {
+         checkBox.current.checked;
+       }
     }
     return () => {
       setMailComp(false)
       mounted = false;
     };
-  }, []);
+  }, [checkBox]);
 
   return (
     <div className="container-fluid px-0">
@@ -437,6 +443,7 @@ const SendMailComp = ({
                       <input
                         className="form-check-input"
                         type="checkbox"
+                        ref={checkBox}
                         id="gridCheck"
                         onChange={(e) => handleCheckbox(e)}
                       />
