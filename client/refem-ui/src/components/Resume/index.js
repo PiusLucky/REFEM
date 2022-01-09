@@ -9,6 +9,7 @@ const ResumeUpload = ({
   hasResume,
   notify,
   setResumeUploadComp,
+  activateResumeTracking
 }) => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
@@ -168,6 +169,32 @@ const ResumeUpload = ({
             </svg>
           )}
         </button>
+      </div>
+      <div className="mt-4 bg-gray-100 rounded-12 border border-gray-300 p-4 px-md-5 py-md-4 mb-4">
+        <div className="row align-items-center">
+          <div className="col d-flex align-items-center pb-3 py-md-3">
+            <span>
+              <img
+                src="https://fabrx.co/preview/muse-dashboard/assets/svg/icons/light.svg"
+                alt="SVG"
+              />
+            </span>
+            <div className="ps-3 ps-sm-4">
+              <h2 className="h1 text-black-600 mb-0">Track resume</h2>
+              <p className="text-gray-700 font-weight-semibold mb-0">
+                View uploaded resume.
+              </p>
+            </div>
+          </div>
+          <div className="col-auto">
+            <a
+              onClick={(e) => activateResumeTracking(e)}
+              className="btn btn-xl btn-dark"
+            >
+              View Now!
+            </a>
+          </div>
+        </div>
       </div>
       <FAQ />
     </>

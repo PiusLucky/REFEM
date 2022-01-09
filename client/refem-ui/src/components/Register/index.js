@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 /* eslint-disable no-unused-vars */
 import { validateEmail, lengthValidator, strengthChecker } from "../../utils/validator";
 import { Link } from "react-router-dom";
@@ -7,10 +7,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { DASHBOARD } from "../../constants/routes";
+import countryData from "./countryData";
 
 const Register = () => {
     const notify = (msg) => toast(msg);
     const navigate = useNavigate();
+    const BASE_URL = process.env.REACT_APP_API;
     const [registerData, setRegisterData] = useState({
       username: "",
       firstname: "",
@@ -19,6 +21,12 @@ const Register = () => {
       email: "",
       password: "",
       repeatPassword: "",
+      countryCode: "",
+      country: "",
+      latitude: 0.00,
+      longitude: 0.00,
+      ip: "",
+      flag: ""
     });
 
     const [ step1, setStep1 ] = useState(true)
@@ -26,6 +34,46 @@ const Register = () => {
     const [ step3, setStep3 ] = useState(false)
     const [ error, setError ] = useState('')
     const [ loading, setLoading ] = useState(false)
+
+    useEffect(()=> {
+      let isMounted = true;
+      async function getIpInfo() {
+        if (isMounted) {
+          const IP_LINK = "https://geolocation-db.com/json/3e4e1fd0-6bb6-11ec-b465-a546b0ea2649"
+          try {
+            const response = await fetch(IP_LINK).then(response => response)
+
+            if(response.ok) {
+               const data = await response.json()
+              for (let i = 0; i < countryData.length; i++) {
+               if (countryData[i].isoCode === data.country_code) {
+                 const country = countryData[i];
+                 setRegisterData({
+                   ...registerData,
+                   countryCode: data.country_code,
+                   country: data.country_name,
+                   latitude: data.latitude,
+                   longitude: data.longitude,
+                   ip: data.IPv4,
+                   flag: country.flag
+                 })
+               }
+              }
+            }
+          } catch (err) {
+            return err
+          }
+
+        }
+      }
+
+      getIpInfo();
+
+      return () => {
+        isMounted = false;
+      };
+
+    }, [])
 
     const stepActivator = (step1, step2, step3) => {
        setStep1(step1) 
@@ -91,12 +139,10 @@ const Register = () => {
         }
     }
 
-
-
     const handleFinalSubmit = async () => {
       try {
-        setLoading(true)
-        const BASE_URL = process.env.REACT_APP_API;
+        setLoading(true)   
+        
         const { data } = await axios.post(
           `${BASE_URL}/api/v1/auth/register`,
           registerData,

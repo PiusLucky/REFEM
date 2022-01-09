@@ -1,10 +1,6 @@
 const UserModel = require("../models/User");
 const { validateEmail, strengthChecker, lengthValidator } = require("./logic");
 const bcrypt = require("bcrypt");
-// Since countryData.json is static, it is okay to use require to read it's JSON content.
-let countryData = require("../json/countryData");
-const axios = require("axios");
-let { IPinfoWrapper } = require("node-ipinfo");
 const handlebars = require("handlebars");
 const fs = require("fs");
 const { promisify } = require("util");
@@ -15,40 +11,6 @@ const crypto = require("crypto");
 
 dotenv.config();
 
-const getIpInfo = async () => {
-  const IPIFY_LINK = process.env.IPIFY_LINK;
-  const IP_INFO_KEY = process.env.IP_INFO_KEY;
-
-  let ipInfo = {};
-
-  try {
-    const response = await axios.get(IPIFY_LINK);
-    if (response.status === 200) {
-      const detectedIp = response.data.ip;
-      let ipData = new IPinfoWrapper(IP_INFO_KEY);
-      let lookup = await ipData.lookupIp(detectedIp);
-      if (lookup.ip || lookup.status === 200) {
-        ipInfo = {
-          ip: detectedIp,
-          isoCode: lookup.countryCode,
-          country: lookup.country,
-        };
-        for (let i = 0; i < countryData.length; i++) {
-          if (countryData[i].isoCode === lookup.countryCode) {
-            const country = countryData[i];
-            ipInfo["flag"] = country.flag;
-            ipInfo["dialCode"] = country.dialCode;
-            return ipInfo;
-          }
-        }
-      }
-    }
-  } catch (err) {
-    return;
-  }
-
-  return ipInfo;
-};
 
 const saveUserInstanceAndReturnJSON = () => {
   const FRONTEND_LINK = process.env.FRONTEND_LINK;
@@ -58,16 +20,6 @@ const saveUserInstanceAndReturnJSON = () => {
   const PORT = process.env.GMAIL_PORT;
 
   return async (req, res) => {
-    const ipData = await getIpInfo();
-
-    if (!ipData?.hasOwnProperty("ip")) {
-      return res.status(500).json({
-        msg: "Ip-information retriever failed!",
-        _help:
-          "This issue has been escalated to our technical unit, it will be fixed soon.",
-      });
-    }
-
     const {
       username,
       firstname,
@@ -76,6 +28,12 @@ const saveUserInstanceAndReturnJSON = () => {
       password,
       repeatPassword,
       phoneNumber,
+      countryCode,
+      country,
+      latitude,
+      longitude,
+      ip,
+      flag
     } = req.body;
 
     let user = req.user;
@@ -91,11 +49,12 @@ const saveUserInstanceAndReturnJSON = () => {
     user.password = password;
     user.repeatPassword = repeatPassword;
     user.phoneNumber = phoneNumber;
-    user.ipGeo.ip = ipData.ip;
-    user.ipGeo.flag = ipData.flag;
-    user.ipGeo.isoCode = ipData.isoCode;
-    user.ipGeo.country = ipData.country;
-    user.ipGeo.dialCode = ipData.dialCode;
+    user.ipGeo.ip = ip;
+    user.ipGeo.flag = flag;
+    user.ipGeo.countryCode = countryCode;
+    user.ipGeo.country = country;
+    user.ipGeo.latitude = latitude;
+    user.ipGeo.longitude = longitude;
 
     //generate new password
     const salt = await bcrypt.genSalt(10);

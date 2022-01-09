@@ -24,7 +24,6 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 const corsOptions = {
-    // 'http://localhost:3000',
     origin: process.env.FRONTEND_LINK,
     credentials: true,
 };

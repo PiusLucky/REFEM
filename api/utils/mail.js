@@ -3,10 +3,6 @@ const MailModel = require("../models/Mail");
 const { validateEmail, lengthValidator } = require("./logic");
 const Role = require("./role");
 const bcrypt = require("bcrypt");
-// Since countryData.json is static, it is okay to use "require" to read its JSON content.
-let countryData = require("../json/countryData");
-const axios = require("axios");
-let { IPinfoWrapper } = require("node-ipinfo");
 const handlebars = require("handlebars");
 const fs = require("fs");
 const { promisify } = require("util");

@@ -76,7 +76,7 @@ const Modal = ({loggedIn}) => {
               <p className="text-gray-700 mb-1 lh-base">Registered {moment(loggedIn?.createdAt).calendar()} </p>
               <div className="card-header-title mb-2 mt-3 font-weight-semibold">Developer&apos;s API Key</div>
               <div
-                className="alert alert-secondary alert-dismissible fade show"
+                className="alert alert-secondary alert-dismissible fade show overflow-x"
                 role="alert"
               >
                 {loggedIn?.apiKey}

@@ -4,9 +4,9 @@ import React from "react";
 const FAQ = () => {
     return (
        <div className="muze-section mb-4 mt-3 mt-md-4">
-        <h2 className="border-bottom border-gray-200 pb-3 pb-md-4 h1 border-top pt-4 pt-xxl-5 mb-0">
+        <h4 className="border-bottom border-gray-200 pb-3 pb-md-4 h1 border-top pt-4 pt-xxl-5 mb-0">
           <span className="d-block mb-lg-3 mt-md-4 pt-lg-2">F.A.Q on Resume</span>
-        </h2>
+        </h4>
         <div className="accordion muze-collapes" id="pricingboxes">
           <div className="card">
             <div className="card-header p-0" id="pricingOne">

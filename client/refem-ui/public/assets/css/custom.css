@@ -100,3 +100,14 @@
   align-items: center;
   margin: auto 0;
 }
+
+.overflow-x {
+  overflow-x: scroll;
+}
+
+.country-flag {
+  max-height: 5.8rem;
+  max-width: 5.8rem;
+  border-radius: 1rem;
+  box-shadow: -1px -1px 16px -5px rgba(0,0,0,0.1);
+}

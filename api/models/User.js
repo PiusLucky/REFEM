@@ -4,21 +4,23 @@ const Role = require("../utils/role");
 const keyGenerator = require("../utils/keyGenerator");
 
 
-
 const ipInfo = new mongoose.Schema({
   ip: {
-    type: String
-  },
-  flag: {
-    type: String
-  },
-  isoCode: {
     type: String
   },
   country: {
     type: String
   },
-  dialCode: {
+  flag: {
+    type: String
+  },
+  countryCode: {
+    type: String
+  },
+  longitude: {
+    type: String
+  },
+  latitude: {
     type: String
   },
 });

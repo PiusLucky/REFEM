@@ -617,7 +617,7 @@ const Dashboard = () => {
             />
           )}
           {resumeTracking && <ResumeTracking resumeData={resumeData} setResumeTracking={setResumeTracking} activateResumeUpload={activateResumeUpload}/>}
-          {resumeUploadComp && <ResumeUpload setNewResumeUploaded={setNewResumeUploaded} setResumeUploadComp={setResumeUploadComp} notify={notify} hasResume={hasResume}/>}
+          {resumeUploadComp && <ResumeUpload activateResumeTracking={activateResumeTracking} setNewResumeUploaded={setNewResumeUploaded} setResumeUploadComp={setResumeUploadComp} notify={notify} hasResume={hasResume}/>}
           {mailTracking && <MailTracking setMailTracking={setMailTracking} mailData={mailData} />}
           <FooterComp />
         </div>

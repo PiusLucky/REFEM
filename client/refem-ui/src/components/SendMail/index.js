@@ -114,11 +114,11 @@ const SendMailComp = ({
                   </span>
                   <span className="h3 mb-0">{loggedIn?.ipGeo.country}</span>
                   <span className="d-block fs-11 mt-2 font-weight-semibold">
-                    {loggedIn?.ipGeo.isoCode} ({loggedIn?.ipGeo.dialCode})
+                    {loggedIn?.ipGeo.countryCode} ({`${loggedIn?.ipGeo?.longitude}' ${loggedIn?.ipGeo?.latitude}'`})
                   </span>
                 </div>
                 <div className="col-7 col-xxl-6 pe-xxl-0">
-                  <img src={loggedIn?.ipGeo.flag} alt="country flag" />
+                  <img src={loggedIn?.ipGeo.flag} alt="country flag" className="country-flag" />
                 </div>
               </div>
             </div>
