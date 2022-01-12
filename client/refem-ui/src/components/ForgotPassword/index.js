@@ -80,7 +80,7 @@ const ForgotPassword = () => {
                                 value={userData.email}
                                 onChange={(e) =>
                                     setUserData({
-                                        email: e.target.value,
+                                        email: e.target.value.toLowerCase(),
                                     })
                                 }
                                 required
