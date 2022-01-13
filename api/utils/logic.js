@@ -3,9 +3,9 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const validateEmail = (email) => {
-  // The last value {2,4} represents anything after the "." in gmail.
-  // Like "com" passes a minimum of two and the maximum of 4 (within range).
-  const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+  // The last value {2,50} represents anything after the "." in gmail.
+  // Like "com" passes a minimum of two and the maximum of 50 (within range).
+  const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,50})+$/;
   return re.test(email);
 };
 
