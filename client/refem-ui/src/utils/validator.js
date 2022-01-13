@@ -1,8 +1,8 @@
 /* eslint-disable no-useless-escape */
 const validateEmail = (email) => {
-  // The last value {2,4} represents anything after the "." in gmail.
-  // Like "com" passes a minimum of two and the maximum of 4 (within range).
-  const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+  // The last value {2,7} represents anything after the "." in gmail.
+  // Like "com" passes a minimum of two and the maximum of 7 (within range).
+  const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,7})+$/;
   return re.test(email);
 };
 
