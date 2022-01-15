@@ -2,6 +2,8 @@
 
 [![License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/PiusLucky/REFEM/blob/main/LICENSE)
 
+### Disclaimer
+Please do not use this piece of software in incognito mode as it doesn't support(or store) any kind of cookie.
 
 ## Go Live
 [Website](https://refem.vercel.app)
@@ -164,8 +166,6 @@ This endpoint registers a firstime user.
   "repeatPassword": "<PASSWORD>"
 }
 ```
-
-
 
 
 ### Check Documentation for More
