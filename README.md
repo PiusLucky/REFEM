@@ -5,6 +5,9 @@
 ### Disclaimer
 Please do not use this piece of software in incognito mode as it doesn't support(or store) any kind of cookie.
 
+### little work around: 
+Go to chrome://settings/cookies in your chrome Tab and set to "Allow all cookies"
+
 ## Go Live
 [Website](https://refem.vercel.app)
 
