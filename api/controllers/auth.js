@@ -395,12 +395,18 @@ const activationCode = async (req, res) => {
 // @route   POST /api/v1/auth/logout
 // @access  Public
 const logout = async (req, res) => {
+  const ENVIRONMENT = process.env.NODE_ENV;
+  const prod = ENVIRONMENT !== "development"
   try {
     res.cookie("authToken", "", {
       httpOnly: true,
       expires: new Date(0),
+      setPath: "/",
+      secure: prod,
+      ...(prod && {
+        sameSite: "None",
+      }),
     });
-    // res.clearCookie('authToken', {domain: "localhost", path: "/"});
     return res.status(201).json({ message: "Logout succeeded." });
   } catch (error) {
     res.status(401).json({ message: error.message });
