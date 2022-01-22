@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/PiusLucky/REFEM/blob/main/LICENSE)
 
 ### Disclaimer
-Please do not use this piece of software in incognito mode as it doesn't support(or store) any kind of cookie.
+Please do not use this piece of software in incognito mode as both the frontend and backend were deployed in different domain, so with this single reason of "cross domain" cookies, cookies won't be set and the authentication will fail.
 
 ### little work around: 
 Go to chrome://settings/cookies in your chrome Tab and set to "Allow all cookies"
